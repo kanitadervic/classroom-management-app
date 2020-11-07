@@ -1,0 +1,43 @@
+.sve{
+    position:absolute;
+    top:0;left:0;right:0;bottom:0;
+    background: grey;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    border: solid black 4px;
+    
+
+}
+
+.klasa {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    
+}
+
+
+
+input, select {
+    width: 20pc;
+    padding: 12px 20px;
+    margin-left: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    align-items: center;
+    margin-right: 0px;
+    text-align: center;
+ 
+  }
+
+label.neka { 
+    display: table-cell; 
+    margin: auto 50px auto auto; 
+    text-align: center;
+    white-space: nowrap; 
+    vertical-align: middle;
+} 
