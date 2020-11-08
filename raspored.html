@@ -1,45 +1,183 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Zadatak 3</title>
+    <title>Zadatak 1</title>
     <link rel="stylesheet" type="text/css" href="raspored.css">
     <META http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
     <div class="sve">
-    <form class="container">
-        <div class="klasa">
-            <label for='nazivpredmeta'>Naziv predmeta:</label>
-            <input type='text' id='nazivpredmeta' />
-        </div>
-        <div class="klasa">
-        <label class="neka" for="tip">Tip:</label> 
-        <select>
-            <option value="predavanje">Predavanje</option>
-            <option value="vjezbe">Vježbe</option>
-         </select>
-        </div>
-        <div class="klasa">
-        <label class="neka" for='vrijemepocetka'>Vrijeme pocetka:</label>
-        <input type='time' id='vrijemepocetka' />
-        </div>
-        <div class="klasa">
-        <label class="neka" for='vrijemekraja'>Vrijeme kraja::</label>
-        <input type='time' id='vrijemekraja' />
-        </div>
-        <div class="klasa">
-        <label class="neka" for='sedmica'>Datum u sedmici:</label>
-        <select class="neka">
-            <option value="ponedjeljak">Ponedjeljak</option>
-            <option value="utorak">Utorak</option>
-            <option value="srijeda">Srijeda</option>
-            <option value="cetvrtak">Četvrtak</option>
-            <option value="petak">Petak</option>
-            <option value="subota">Subota</option>
-            <option value="nedjelja">Nedjelja</option>
-          </select>
-        </div>
-    </form>
+        <table>
+            <tr>
+                <td id="prazno"></td>
+                <td id="sati" colspan="3">08:00</td>
+         
+
+                <td id="sati" colspan="4">10:00</td>
+
+
+                <td id="sati" colspan="5">12:00</td>
+
+
+                <td id="sati" colspan="4">15:00</td>
+            
+
+                <td id="sati" colspan="4">17:00</td>
+
+                <td id="sati" colspan="5">19:00</td>
+
+            </tr>
+            <tr>
+                <td id="sedmica">Ponedjeljak</td>
+                <td ></td>
+                <td></td>
+                <td id="tekst" colspan="6">WT<br>predavanje</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+
+                
+                <td id="tekst" colspan="3">WT<br>vježbe</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td></td>
+
+                <td id="tekst" colspan="6">RMA<br>predavanje</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                
+            </tr>
+            <tr>
+                <td id="sedmica">Utorak</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="3" id="tekst">RMA<br>vježbe</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td colspan="4" id="tekst">DM<br>tutorijal</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td id="tekst" colspan="6">DM<br>predavanje</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td id="sedmica">Srijeda</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td id="tekst" colspan="6">OI<br>predavanje</td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td style="display: none;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td id="sedmica">Četvrtak</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td id="sedmica">Petak</td>
+                <td ></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>
