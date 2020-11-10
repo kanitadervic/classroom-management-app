@@ -1,4 +1,4 @@
-.sve{
+#container{
     position:absolute;
     top:0;left:0;right:0;bottom:0;
     display: flex;
@@ -8,15 +8,18 @@
   }
 
   table{
-      height: 250px;
+      height: 300px;
       width: 700px;
+      background: #E6E6E6;
   }
 
     td:nth-child(even){
         border-right-style: dashed;
+        stroke:'%23333'; stroke-width:'6'; stroke-dasharray:'23%2c 21'
     }
     td:nth-child(odd){
         border-left-style: dashed;
+        stroke:'%23333'; stroke-width:'6'; stroke-dasharray:'23%2c 21'
     }
    table, td,tr {
     border: 1px solid black;
@@ -29,27 +32,22 @@
   }
 
 
-  #sedmica {
+  #weekday {
       border-left: white 1px solid;
       border-top: white 1px solid;
       border-bottom: white 1px solid;
       text-align: right;
       padding-right: 10pt;
+      background: white;
+      
   }
 
-  #sati {
-    border-left: white 1px solid;
-      border-top: white 1px solid;
-      border-right: white 1px solid;
-    
-    text-align: left;
-  }
 
-  #prazno {
-      border: white 1px solid;
-  }
 
-  #tekst {
+  .input {
     text-align: center;
-
+    background: #DEE6EF;
+    vertical-align: top;
+    padding: 5px 0
+    
   }
