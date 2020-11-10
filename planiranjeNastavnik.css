@@ -1,16 +1,19 @@
-.sve{
+body {
+    background-color: #B4C7DC
+}
+
+#wrapper{
     position:absolute;
     top:0;left:0;right:0;bottom:0;
-    background: grey;
+
     display: flex;
     align-items: center;
     justify-content:center;
-    border: solid black 4px;
-    
-
+    width: auto;
+    height: 1000px;
 }
 
-.klasa {
+.row {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -28,16 +31,16 @@ input, select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    align-items: center;
+    align-items: left;
     margin-right: 0px;
-    text-align: center;
+    text-align: left;
  
   }
 
-label.neka { 
+label.selected { 
     display: table-cell; 
     margin: auto 50px auto auto; 
-    text-align: center;
+    text-align: right;
     white-space: nowrap; 
     vertical-align: middle;
 } 
