@@ -6,7 +6,6 @@ fieldset {
     border: 2px solid;
     border-radius: 50px;
     border-color: #3F6DA9;
-    
     display: grid;
     align-items: center;
 }
@@ -18,7 +17,6 @@ fieldset {
     display: flex;
     align-items: center;
     justify-content:center;
-    
 }
 
 .row {
@@ -54,3 +52,29 @@ label {
     white-space: nowrap; 
     vertical-align: middle;
 } 
+
+@media only screen and (max-width: 600px) {
+    .row {
+        flex-direction: column;
+        height: 80%;
+        padding-left: 5%;
+    }
+
+    fieldset {
+        margin-top: 20%;
+        margin-bottom: 5%;
+        padding-top: 1%;
+    }
+
+    input,select {
+        margin-top: 1%;
+        margin-bottom: 5%;
+        align-items: center;
+        text-align: center;
+    }
+
+    #wrapper {
+        padding-top: 4em;
+        min-height: 250px;
+    }
+}
