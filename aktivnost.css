@@ -10,15 +10,14 @@ body{
     background-color: #B4C7DC
 }
 
-.sporedna-aktivnost{
-    border: 2px solid;
-    border-radius: 50px;
-    border-color: #3F6DA9;
+.sljedeca-aktivnost, .prethodna-aktivnost{
+  border: 2px solid;
+  border-radius: 50px;
+  border-color: #3F6DA9;
   padding: 20px; 
   width: 250px;
   height: 250px;
   color: #3F6DA9;
-  overflow: auto;
 }
 
 .trenutna-aktivnost {
@@ -30,7 +29,7 @@ body{
   width: 300px;
   height: 300px;
   color: #3F6DA9;
-  overflow: auto;
+
 }
 
 legend {
@@ -43,8 +42,24 @@ legend {
     font-size: 25px;
 }
 
-#info {
-    
+#info {    
     text-align: center;
     font-size: 15px
+}
+
+
+
+@media only screen and (max-width: 600px) {
+  .sve{
+    position: relative;
+    margin-top: -300px;
+    margin-bottom: 10px; 
+    display: inline-block
+  }
+
+  .prethodna-aktivnost{
+    visibility: hidden;
+  }
+
+
 }
