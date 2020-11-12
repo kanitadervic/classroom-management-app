@@ -61,9 +61,9 @@ label {
     }
 
     fieldset {
-        margin-top: 20%;
-        margin-bottom: 5%;
-        padding-top: 1%;
+        margin-top: 160px;
+        margin-bottom: 5px;
+
     }
 
     input,select {

@@ -1,16 +1,16 @@
 .sve{
-    position:absolute;
-    top:0;left:0;right:0;bottom:0;
-    display: flex;
-    align-items: center;
-    justify-content:center;
-  }
-
-body{
-    background-color: #B4C7DC
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  display: flex;
+  align-items: center;
+  justify-content:center;
 }
 
-.sljedeca-aktivnost, .prethodna-aktivnost{
+body{
+  background-color: #B4C7DC
+}
+
+.sljedeca-aktivnost,.prethodna-aktivnost{
   border: 2px solid;
   border-radius: 50px;
   border-color: #3F6DA9;
@@ -18,33 +18,34 @@ body{
   width: 250px;
   height: 250px;
   color: #3F6DA9;
+  overflow: auto;
 }
 
 .trenutna-aktivnost {
-    border: 2px solid;
-    border-radius: 10px;
-    border-color: #3F6DA9;
-    padding: 15px; 
-    margin-bottom: 50px;
+  border: 2px solid;
+  border-radius: 10px;
+  border-color: #3F6DA9;
+  padding: 15px; 
+  margin-bottom: 50px;
   width: 300px;
   height: 300px;
   color: #3F6DA9;
-
+  overflow: auto;
 }
 
 legend {
-    text-align: center
+  text-align: center;
 }
 
 #aktivnost {
-    padding: 35px 0;
-    text-align: center;
-    font-size: 25px;
+  padding: 35px 0;
+  text-align: center;
+  font-size: 25px;
 }
 
-#info {    
-    text-align: center;
-    font-size: 15px
+#info {
+  text-align: center;
+  font-size: 15px
 }
 
 
@@ -52,7 +53,7 @@ legend {
 @media only screen and (max-width: 600px) {
   .sve{
     position: relative;
-    margin-top: -300px;
+    margin-top: -250px;
     margin-bottom: 10px; 
     display: inline-block
   }
@@ -61,5 +62,5 @@ legend {
     visibility: hidden;
   }
 
-
+  
 }

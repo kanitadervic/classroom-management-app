@@ -3,6 +3,7 @@
     top:0;left:0;right:0;bottom:0;
     display: flex;
     align-items: center;
+    
     justify-content:center;
   }
 
@@ -83,7 +84,7 @@
     border-collapse: collapse;
     width: 0%;
     height: 0%;
-    background-color: white;
+    background: white;
     border: none;
     }
   
@@ -103,8 +104,8 @@ td:nth-child(odd){
 }
 
 #container {
-  
-  margin-top: -250px;
+  position: relative;
+  margin-top: -33px;
   padding-bottom: 4em;
 }
 
