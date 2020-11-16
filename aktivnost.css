@@ -1,4 +1,4 @@
-.sve{
+#wrapper{
   position:absolute;
   top:0;left:0;right:0;bottom:0;
   display: flex;
@@ -37,13 +37,13 @@ legend {
   text-align: center;
 }
 
-#aktivnost {
+.aktivnost {
   padding: 35px 0;
   text-align: center;
   font-size: 25px;
 }
 
-#info {
+.info {
   text-align: center;
   font-size: 15px
 }
@@ -51,7 +51,7 @@ legend {
 
 
 @media only screen and (max-width: 600px) {
-  .sve{
+  #wrapper{
     position: relative;
     margin-top: -250px;
     margin-bottom: 10px; 
