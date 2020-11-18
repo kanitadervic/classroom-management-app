@@ -10,13 +10,16 @@ fieldset {
     align-items: center;
 }
 
-#wrapper{
-    position:absolute;
-    top:0;left:0;right:0;bottom:0;
+#wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     color: #3F6DA9;
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
 }
 
 .row {
@@ -29,7 +32,8 @@ fieldset {
 
 
 
-input, select {
+input,
+select {
     width: 15pc;
     padding: 12px 20px;
     margin-left: auto;
@@ -42,16 +46,16 @@ input, select {
     margin: 20px 20px auto auto;
     color: #3F6DA9;
     background-color: white;
-  }
+}
 
 
-label { 
-    display: table-cell; 
-    margin: auto 50px auto 20px; 
+label {
+    display: table-cell;
+    margin: auto 50px auto 20px;
     text-align: right;
-    white-space: nowrap; 
+    white-space: nowrap;
     vertical-align: middle;
-} 
+}
 
 @media only screen and (max-width: 600px) {
     .row {
@@ -66,7 +70,8 @@ label {
 
     }
 
-    input,select {
+    input,
+    select {
         margin-top: 1%;
         margin-bottom: 5%;
         align-items: center;
