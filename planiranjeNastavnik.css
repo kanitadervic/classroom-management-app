@@ -79,7 +79,7 @@ label {
     }
 
     #wrapper {
-        padding-top: 4em;
+        padding-top: 0;
         min-height: 250px;
     }
 }
