@@ -5,7 +5,6 @@
     top:0;left:0;right:0;bottom:0;
     display: flex;
     align-items: center;
-    
     justify-content:center;
   }
 
@@ -68,55 +67,49 @@
     border: white 1px solid;
   }
 
-@media all and (max-width: 600px) {
-  .hours, #empty, td:empty {
-    background: none;
-    border: none;
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    padding: 0;
-    margin: 0;
-    border: 0
-  }
-
-  table {
-    transform: rotate(90deg);
-    display: flex;
-    border-collapse: collapse;
-    width: 0%;
-    height: 0%;
-    background: none;
-    border: none;
-    }
-
-    #border {
+  @media all and (max-width: 600px) {
+    .hours, #empty, td:empty, #border {
+      background: none;
       border: none;
+      visibility: hidden;
+      width: 0;
+      height: 0;
+      padding: 0;
+      margin: 0;
+      border: 0
+    }
+
+      table, table td, table tr{ display: block; } 
+  
+
+      table {
+        background: none;
+        border: none;  
+        margin-top: 250px;
+      }
+  
+      td:nth-child(even),td:nth-child(odd){
+        border-right-style: solid;
+        border-left-style: solid;
     }
   
-
-  tr{
-    display: table-cell;
-    
+    #container {
+      position: relative;
+      margin-top: -200px;
+      padding-bottom: 25%;
+      padding-left: 25%;
+    }
+  
+  .weekday {
+    border: 1px black solid;
+    text-align: center;
+    width: 214px;
+    padding-right: 0px;
+    border-top: none;
   }
 
-
-  td:nth-child(even){
-    border-right-style: none;
-  
-}
-td:nth-child(odd){
-    border-left-style: none;
-}
-
-#container {
-  position: relative;
-  margin-top: -200px;
-  padding-bottom: 4em;
-}
-
-
-.weekday {
-  border: 1px black solid;
-}
-}
+  .input {
+    width: 213px;
+    border-bottom: none;
+  }
+  }
