@@ -1,0 +1,85 @@
+body {
+    background-color: #B4C7DC
+}
+
+fieldset {
+    border: 2px solid;
+    border-radius: 50px;
+    border-color: #3F6DA9;
+    display: grid;
+    align-items: center;
+}
+
+#wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #3F6DA9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+}
+
+
+
+input,
+select {
+    width: 15pc;
+    padding: 12px 20px;
+    margin-left: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    align-items: left;
+    margin-right: 0px;
+    text-align: left;
+    margin: 20px 20px auto auto;
+    color: #3F6DA9;
+    background-color: white;
+}
+
+
+label {
+    display: table-cell;
+    margin: auto 50px auto 20px;
+    text-align: right;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+@media only screen and (max-width: 600px) {
+    .row {
+        flex-direction: column;
+        height: 80%;
+        padding-left: 5%;
+    }
+
+    fieldset {
+        margin-top: 160px;
+        margin-bottom: 5px;
+
+    }
+
+    input,
+    select {
+        margin-top: 1%;
+        margin-bottom: 5%;
+        align-items: center;
+        text-align: center;
+    }
+
+    #wrapper {
+        padding-top: 0;
+        min-height: 250px;
+    }
+}

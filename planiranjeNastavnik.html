@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Zadatak 3</title>
+    <link rel="stylesheet" type="text/css" href="planiranjeNastavnik.css">
+    <link rel="stylesheet" type="text/css" href="navbar.css">
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+    <ul>
+        <li><a href="raspored.html">Raspored</a></li>
+        <li><a href="aktivnost.html">Aktivnost</a></li>
+        <li><a class="active" href="planiranjeNastavnik.html">Planiranje</a></li>
+        <li><a href="podaciStudent.html">Podaci</a></li>
+    </ul>
+    <div id="wrapper">
+        <fieldset>
+            <form>
+                <div class="row">
+                    <label for='subject'>Naziv predmeta:</label>
+                    <input type='text' id='subject' />
+                </div>
+                <div class="row">
+                    <label>Tip:</label>
+                    <select>
+                        <option value="lecture">Predavanje</option>
+                        <option value="tutorial">Vježbe</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Vrijeme pocetka:</label>
+                    <input type='time' />
+                </div>
+                <div class="row">
+                    <label>Vrijeme kraja:</label>
+                    <input type='time' />
+                </div>
+                <div class="row">
+                    <label>Datum u sedmici:</label>
+                    <select>
+                        <option value="monday">Ponedjeljak</option>
+                        <option value="tuesday">Utorak</option>
+                        <option value="wednesday">Srijeda</option>
+                        <option value="thursday">Četvrtak</option>
+                        <option value="friday">Petak</option>
+                        <option value="saturday">Subota</option>
+                        <option value="sunday">Nedjelja</option>
+                    </select>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</body>
+
+</html>

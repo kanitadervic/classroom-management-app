@@ -1,0 +1,128 @@
+#container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+table {
+  height: 600px;
+  width: 1000px;
+  background: #E6E6E6;
+}
+
+td:nth-child(even) {
+  border-right-style: dashed;
+
+}
+
+td:nth-child(odd) {
+  border-left-style: dashed;
+}
+
+table,
+td,
+tr {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+td {
+  width: 200px;
+  height: 60px;
+}
+
+
+.weekday {
+  border-left: white 1px solid !important;
+  border-bottom: white 1px solid;
+  text-align: right;
+  padding-right: 10pt;
+  background: white;
+
+}
+
+.input {
+  text-align: center;
+  background: #DEE6EF;
+}
+
+
+.hours {
+  border: none !important;
+
+  border-top: white 1px solid;
+  border-right: none;
+  vertical-align: bottom;
+  background: white;
+  text-align: left;
+}
+
+#empty {
+  border: white 1px solid;
+  background: white;
+}
+
+#border {
+  border: white 1px solid;
+}
+
+@media all and (max-width: 600px) {
+
+  .hours,
+  #empty,
+  td:empty,
+  #border {
+    background: none;
+    border: none;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: 0
+  }
+
+  table,
+  table td,
+  table tr {
+    display: block;
+  }
+
+
+  table {
+    background: none;
+    border: none;
+    margin-top: 250px;
+  }
+
+  td:nth-child(even),
+  td:nth-child(odd) {
+    border-right-style: solid;
+    border-left-style: solid;
+  }
+
+  #container {
+    position: relative;
+    margin-top: -200px;
+    padding-bottom: 25%;
+    padding-left: 25%;
+  }
+
+  .weekday {
+    border: 1px black solid;
+    text-align: center;
+    width: 214px;
+    padding-right: 0px;
+    border-top: none; 
+  }
+
+  .input {
+    width: 213px;
+    border-bottom: none;
+  }
+}
