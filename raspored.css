@@ -54,7 +54,7 @@ td {
 
 .hours {
   border: none !important;
-
+  width: 200px;
   border-top: white 1px solid;
   border-right: none;
   vertical-align: bottom;
