@@ -6,7 +6,7 @@ import {
 let okvir = document.getElementById('okvir');
 
 
-iscrtajRaspored(okvir, ["Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak"], 0, 23);
+iscrtajRaspored(okvir, ["Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak"], 8,21);
 dodajAktivnost(okvir, "WT", "Predavanje", 9, 12, "Ponedjeljak");
 dodajAktivnost(okvir, "WT", "vježbe", 12, 13.5, "Ponedjeljak");
 dodajAktivnost(okvir, "RMA", "predavanje", 14, 17, "Ponedjeljak");

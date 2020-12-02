@@ -104,8 +104,8 @@ var elementIsEmpty = function (el) {
 var checkCells = function (raspored, day, start, columnspan, vrijemePocetak, vrijemeKraj) {
   var body = document.getElementById(raspored.id);
   for (let i = start; i < start + columnspan * 2; i++) {
-    let variable = body.getElementsByTagName('tr')[day].getElementsByTagName('td')[i].innerHTML;
-    if (!elementIsEmpty(variable)) {
+    let variable = body.getElementsByTagName('tr')[day].getElementsByTagName('td')[i];
+    if (!elementIsEmpty(variable.innerHTML) || variable.style.display == "none") {
       alert("Greška - termin " + vrijemePocetak + "-" + vrijemeKraj + " zauzet")
       return true;
     }
