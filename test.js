@@ -279,8 +279,8 @@ describe('Modul', function () {
             okvir25.id = "okvir25"
             document.body.appendChild(okvir25)
             Modul.iscrtajRaspored(okvir25, ["Ponedjeljak"], 0, 2);
-            let body = Modul.dodajAktivnost(okvir25, "RG", "zadaća", 0, 1.5, "Ponedjeljak");
-            body = Modul.dodajAktivnost(okvir25, "VVS", "Predavanje", 1.5, 2, "Ponedjeljak");
+            let body = Modul.dodajAktivnost(okvir25, "RG", "zadaća", 0, 0.5, "Ponedjeljak");
+            body = Modul.dodajAktivnost(okvir25, "VVS", "Predavanje", 0.5, 2, "Ponedjeljak");
 
             assert.equal(body.getElementsByClassName('input').length, 2)
         });
