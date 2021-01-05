@@ -1,0 +1,4 @@
+VVS,tutorijal,9,12,Petak
+RG,tutorijal,9,12,Srijeda
+OOI,predavanje,15,16,Ponedjeljak
+VVS,predavanje,15,16,Četvrtak

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="unosRasporeda.css">
+    <link rel="stylesheet" type="text/css" href="navbar.css">
+
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+    <ul>
+        <li><a href="raspored.html">Raspored</a></li>
+        <li><a href="aktivnost.html">Aktivnost</a></li>
+        <li><a class="active" href="planiranjeNastavnik.html">Planiranje</a></li>
+        <li><a href="podaciStudent.html">Podaci</a></li>
+    </ul>
+    <div id="wrapper">
+        <fieldset>
+            <form>
+                <div class="row">
+                    <label for='subject'>Naziv predmeta:</label>
+                    <input type='text' id='subject' />
+                </div>
+                <div class="row">
+                    <label>Tip:</label>
+                    <input type='text' id='activity' />
+                </div>
+                <div class="row">
+                    <label>Vrijeme pocetka:</label>
+                    <input type='time' id='timeStart' />
+                </div>
+                <div class="row">
+                    <label>Vrijeme kraja:</label>
+                    <input type='time' id='timeEnd' />
+                </div>
+                <div class="row">
+                    <label>Dan u sedmici:</label>
+                    <select id='day'>
+                        <option value="Ponedjeljak">Ponedjeljak</option>
+                        <option value="Utorak">Utorak</option>
+                        <option value="Srijeda">Srijeda</option>
+                        <option value="Četvrtak">Četvrtak</option>
+                        <option value="Petak">Petak</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <input id="dodajButton" type="button" onclick="dodajAktivnost()" value="Dodaj aktivnost">
+                </div>
+
+            </form>
+
+        </fieldset>
+    </div>
+    <p id='poruka'>
+
+    </p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="unosRasporeda.js"></script>
+</body>
+
+</html>
