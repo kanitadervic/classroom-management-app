@@ -32,3 +32,5 @@ POST,/aktivnost,{"naziv": "WT","tip": "tutorijal","pocetak": 6,"kraj": 15.9,"dan
 POST,/aktivnost,{"naziv": "WT","tip": "tutorijal","pocetak": 14,"kraj": 22,"dan": "Srijeda"}, {"message":"Aktivnost nije validna!"}
 DELETE,/predmet/WT,null,{\”message\”:\”Uspješno obrisan predmet!\”}
 DELETE,/all,null,{\”message\”:\”Uspješno obrisan sadržaj datoteka!\”}
+GET,/predmeti,null,[]
+GET,/aktivnosti,null,[]
