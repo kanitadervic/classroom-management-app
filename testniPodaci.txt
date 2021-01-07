@@ -1,2 +1,0 @@
-DELETE,/all,null,{\”message\”:\”Uspješno obrisan sadržaj datoteka!\”}
-GET,/predmet,null,[]

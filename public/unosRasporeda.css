@@ -58,7 +58,7 @@ label {
 }
 
 #poruka {
-    padding-left: 120vh!important;
+    padding-left: 45vw!important;
     position: absolute!important;
     margin: 80vh 0;
     font-size: 1pc;
@@ -100,7 +100,7 @@ label {
     #poruka{
         padding-left: 35vw!important;
         position: absolute!important;
-        top: 65vh;
+        top: 30vh;
         text-align: center;
     }
 }

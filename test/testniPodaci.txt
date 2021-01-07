@@ -1,0 +1,34 @@
+DELETE,/all,null,{\”message\”:\”Uspješno obrisan sadržaj datoteka!\”}
+GET,/predmeti,null,[]
+POST,/predmet,{\"naziv\":\"RMA\"},{\"message\":\"Uspješno dodan predmet!\"}
+POST,/predmet,{\"naziv\":\"WT\"},{\"message\":\"Uspješno dodan predmet!\"}
+GET,/predmeti,null,[{\"naziv\":\"RMA\"},{\"naziv\":\"WT\"}]
+GET,/aktivnosti,null,[]
+GET,/predmet/OOI/aktivnost,null,[]
+POST,/predmet,{\"naziv\":\"OOI\"},{\"message\":\"Uspješno dodan predmet!\"}
+POST,/predmet,{\"naziv\":\"DM\"},{\"message\":\"Uspješno dodan predmet!\"}
+POST,/aktivnost,{"naziv": "DM","tip": "tutorijal","pocetak": 12.5,"kraj": 13,"dan": "Petak"}, {"message":"Uspješno dodana aktivnost!"}
+POST,/aktivnost,{"naziv": "OOI","tip": "predavanje","pocetak": 12.5,"kraj": 13,"dan": "Ponedjeljak"}, {"message":"Uspješno dodana aktivnost!"}
+POST,/aktivnost,{"naziv": "OOI","tip": "tutorijal","pocetak": 14,"kraj": 15,"dan": "Srijeda"}, {"message":"Uspješno dodana aktivnost!"}
+GET,/predmet/OOI/aktivnost,null,[{"naziv": "OOI","tip": "predavanje","pocetak": 12.5,"kraj": 13,"dan": "Ponedjeljak"},{"naziv": "OOI","tip": "tutorijal","pocetak": 14,"kraj": 15,"dan": "Srijeda"}]
+GET,/predmet/DM/aktivnost,null,[{"naziv": "DM","tip": "tutorijal","pocetak": 12.5,"kraj": 13,"dan": "Petak"}]
+GET,/predmet/WT/aktivnost,null,[]
+GET,/aktivnosti,null,[{"naziv": "DM","tip": "tutorijal","pocetak": 12.5,"kraj": 13,"dan": "Petak"},{"naziv": "OOI","tip": "predavanje","pocetak": 12.5,"kraj": 13,"dan": "Ponedjeljak"}, {"naziv": "OOI","tip": "tutorijal","pocetak": 14,"kraj": 15,"dan": "Srijeda"}]
+DELETE,/aktivnost/DM,null,{\”message\”:\”Uspješno obrisana aktivnost!\”}
+GET,/predmet/DM/aktivnost,null,[]
+GET,/aktivnosti,null,[{"naziv": "OOI","tip": "predavanje","pocetak": 12.5,"kraj": 13,"dan": "Ponedjeljak"}, {"naziv": "OOI","tip": "tutorijal","pocetak": 14,"kraj": 15,"dan": "Srijeda"}]
+DELETE,/aktivnost/OOI,null,{\”message\”:\”Uspješno obrisana aktivnost!\”}
+GET,/aktivnosti,null,[]
+GET,/predmet/OOI/aktivnost,null,[]
+POST,/predmet,{\"naziv\":\"VVS\"},{\"message\":\"Uspješno dodan predmet!\"}
+POST,/aktivnost,{"naziv": "VVS","tip": "tutorijal","pocetak": 12.5,"kraj": 13,"dan": "Utorak"}, {"message":"Uspješno dodana aktivnost!"}
+DELETE,/predmet/VVS,null,{\”message\”:\”Uspješno obrisan predmet!\”}
+GET,/predmet/VVS/aktivnost,null,[]
+POST,/predmet,{\"naziv\":\"WT\"},{\"message\":\"Naziv predmeta postoji!\"}
+POST,/aktivnost,{"naziv": "WT","tip": "tutorijal","pocetak": 14,"kraj": 15.9,"dan": "Srijeda"}, {"message":"Aktivnost nije validna!"}
+POST,/aktivnost,{"naziv": "WT","tip": "tutorijal","pocetak": 15,"kraj": 15,"dan": "Subota"}, {"message":"Aktivnost nije validna!"}
+POST,/aktivnost,{"naziv": "RG","tip": "tutorijal","pocetak": 14,"kraj": 15.9,"dan": "Srijeda"}, {"message":"Aktivnost nije validna!"}
+POST,/aktivnost,{"naziv": "WT","tip": "tutorijal","pocetak": 6,"kraj": 15.9,"dan": "Srijeda"}, {"message":"Aktivnost nije validna!"}
+POST,/aktivnost,{"naziv": "WT","tip": "tutorijal","pocetak": 14,"kraj": 22,"dan": "Srijeda"}, {"message":"Aktivnost nije validna!"}
+DELETE,/predmet/WT,null,{\”message\”:\”Uspješno obrisan predmet!\”}
+DELETE,/all,null,{\”message\”:\”Uspješno obrisan sadržaj datoteka!\”}
