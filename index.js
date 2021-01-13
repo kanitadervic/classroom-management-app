@@ -12,6 +12,36 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+const db = require('./database.js');
+
+db.sequelize.sync().then(function () {
+    initialize().then(function () {
+        console.log("Gotovo kreiranje tabela i ubacivanje pocetnih podataka!");
+        //process.exit();
+    });
+});
+
+function initialize() {
+    return new Promise(function (resolve, reject) {
+        db.dan.create({
+            naziv: "Ponedjeljak"
+        });
+        db.dan.create({
+            naziv: "Utorak"
+        });
+        db.dan.create({
+            naziv: "Srijeda"
+        });
+        db.dan.create({
+            naziv: "Četvrtak"
+        });
+        db.dan.create({
+            naziv: "Petak"
+        });
+        resolve("Ucitao dane");
+    })
+}
+
 
 function dajPredmeteIzDatoteke() {
     let datoteka = [];
@@ -60,7 +90,7 @@ function dajAktivnostiIzDatoteke() {
                 });
             }
 
-        } 
+        }
     }
     return aktivnosti;
 }
@@ -88,7 +118,7 @@ function dajAktivnostiZaPredmet(nazivPredmeta) {
                     dan: podaci[4]
                 });
             }
-        } 
+        }
     }
     return aktivnosti;
 }
@@ -313,4 +343,540 @@ app.delete('/all', function (req, res) {
         });
     }
 })
+/*
+    ****************************************************
+                        PREDMET
+    ****************************************************
+*/
+
+/*
+    **CREATE**
+*/
+app.post('/v2/predmet', function (req, res) {
+    var nazivPredmeta = req.body.naziv;
+    db.predmet.create({
+        naziv: nazivPredmeta
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **READ**
+*/
+app.get('/v2/predmeti', function (req, res) {
+    db.predmet.findAll().then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+app.get('/v2/predmet/:id', function (req, res) {
+    var predmetId = req.params.id;
+    db.predmet.findOne({
+        where: {
+            id: predmetId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **DELETE**
+*/
+app.delete('/v2/predmet/:id', function (req, res) {
+    var izbrisiPredmetId = req.params.id;
+    console.log(izbrisiPredmetId)
+    db.predmet.destroy({
+        where: {
+            id: izbrisiPredmetId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    });
+})
+
+
+/*
+    **UPDATE**
+*/
+app.put('/v2/predmet/:id', function (req, res) {
+    var updatePredmetId = req.params.id;
+    var updatePredmetNaziv = req.body.naziv;
+    console.log(updatePredmetId + " " + updatePredmetNaziv)
+    db.predmet.findOne({
+        where: {
+            id: updatePredmetId
+        }
+    }).then(function (response) {
+        response.naziv = updatePredmetNaziv;
+        response.save().then(function (response) {
+                return res.send(JSON.stringify(response));
+            },
+            function (error) {
+                return res.send(error.message);
+            });
+        console.log(response)
+    })
+})
+
+
+
+
+
+
+/*
+    ****************************************************
+                        GRUPA
+    ****************************************************
+*/
+
+/*
+    **CREATE**
+*/
+app.post('/v2/grupa', function (req, res) {
+    var nazivGrupe = req.body.naziv;
+    db.grupa.create({
+        naziv: nazivGrupe
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **READ**
+*/
+app.get('/v2/grupe', function (req, res) {
+    db.grupa.findAll().then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+app.get('/v2/grupa/:id', function (req, res) {
+    var grupaId = req.params.id;
+    db.grupa.findOne({
+        where: {
+            id: grupaId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+
+/*
+    **DELETE**
+*/
+app.delete('/v2/grupa/:id', function (req, res) {
+    var izbrisiGrupuId = req.params.id;
+    console.log(izbrisiGrupuId)
+    db.grupa.destroy({
+        where: {
+            id: izbrisiGrupuId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    });
+})
+
+
+/*
+    **UPDATE**
+*/
+app.put('/v2/grupa/:id', function (req, res) {
+    var updateGrupaId = req.params.id;
+    var updateGrupaNaziv = req.body.naziv;
+    //console.log(updatePredmetId + " " + updatePredmetNaziv)
+    db.grupa.findOne({
+        where: {
+            id: updateGrupaId
+        }
+    }).then(function (response) {
+        response.naziv = updateGrupaNaziv;
+        response.save().then(function (response) {
+                return res.send(JSON.stringify(response));
+            },
+            function (error) {
+                return res.send(error.message);
+            });
+        console.log(response)
+    })
+})
+
+
+/*
+    ****************************************************
+                        AKTIVNOST
+    ****************************************************
+*/
+
+
+/*
+    **CREATE**
+*/
+app.post('/v2/aktivnost', function (req, res) {
+    var nazivAktivnosti = req.body.naziv;
+    var pocetakAktivnosti = req.body.pocetak;
+    var krajAktivnosti = req.body.kraj;
+    db.aktivnost.create({
+        naziv: nazivAktivnosti,
+        pocetak: pocetakAktivnosti,
+        kraj: krajAktivnosti
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **READ**
+*/
+app.get('/v2/aktivnost', function (req, res) {
+    db.aktivnost.findAll().then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+app.get('/v2/aktivnost/:id', function (req, res) {
+    var aktivnostId = req.params.id;
+    db.aktivnost.findOne({
+        where: {
+            id: aktivnostId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+
+/*
+    **DELETE**
+*/
+app.delete('/v2/aktivnost/:id', function (req, res) {
+    var izbrisiAktivnostId = req.params.id;
+    db.aktivnost.destroy({
+        where: {
+            id: izbrisiAktivnostId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    });
+})
+
+
+/*
+    **UPDATE**
+*/
+app.put('/v2/aktivnost/:id', function (req, res) {
+    var updateAktivnostId = req.params.id;
+    var updateAktivnostNaziv = req.body.naziv;
+    var updateAktivnostPocetak = req.body.pocetak;
+    var updateAktivnostKraj = req.body.kraj;
+    //console.log(updatePredmetId + " " + updatePredmetNaziv)
+    db.aktivnost.findOne({
+        where: {
+            id: updateAktivnostId
+        }
+    }).then(function (response) {
+        response.naziv = updateAktivnostNaziv;
+        response.pocetak = updateAktivnostPocetak;
+        response.kraj = updateAktivnostKraj;
+        response.save().then(function (response) {
+                return res.send(JSON.stringify(response));
+            },
+            function (error) {
+                return res.send(error.message);
+            });
+        console.log(response)
+    })
+})
+
+
+
+/*
+    ****************************************************
+                        DAN
+    ****************************************************
+*/
+
+
+/*
+    **CREATE**
+*/
+app.post('/v2/dan', function (req, res) {
+    var nazivDana = req.body.naziv;
+    db.dan.create({
+        naziv: nazivDana
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **READ**
+*/
+app.get('/v2/dani', function (req, res) {
+    db.dan.findAll().then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+app.get('/v2/dan/:id', function (req, res) {
+    var danId = req.params.id;
+    db.dan.findOne({
+        where: {
+            id: danId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+
+/*
+    **DELETE**
+*/
+app.delete('/v2/dan/:id', function (req, res) {
+    var izbrisiDanId = req.params.id;
+    db.dan.destroy({
+        where: {
+            id: izbrisiDanId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    });
+})
+
+/*
+    **UPDATE**
+*/
+app.put('/v2/aktivnost/:id', function (req, res) {
+    var updateDanId = req.params.id;
+    var updateDanNaziv = req.body.naziv;
+    //console.log(updatePredmetId + " " + updatePredmetNaziv)
+    db.dan.findOne({
+        where: {
+            id: updateDanId
+        }
+    }).then(function (response) {
+        response.naziv = updateDanNaziv;
+        response.save().then(function (response) {
+                return res.send(JSON.stringify(response));
+            },
+            function (error) {
+                return res.send(error.message);
+            });
+        console.log(response)
+    })
+})
+
+
+/*
+    ****************************************************
+                        TIP
+    ****************************************************
+*/
+
+/*
+    **CREATE**
+*/
+app.post('/v2/tip', function (req, res) {
+    var nazivTipa = req.body.naziv;
+    db.tip.create({
+        naziv: nazivTipa
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **READ**
+*/
+app.get('/v2/tipovi', function (req, res) {
+    db.tip.findAll().then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+app.get('/v2/tip/:id', function (req, res) {
+    var tipId = req.params.id;
+    db.tip.findOne({
+        where: {
+            id: tipId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+
+/*
+    **DELETE**
+*/
+app.delete('/v2/tip/:id', function (req, res) {
+    var izbrisiTipId = req.params.id;
+    db.dan.destroy({
+        where: {
+            id: izbrisiTipId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    });
+})
+
+
+/*
+    **UPDATE**
+*/
+app.put('/v2/tip/:id', function (req, res) {
+    var updateTipId = req.params.id;
+    var updateTipNaziv = req.body.naziv;
+    //console.log(updatePredmetId + " " + updatePredmetNaziv)
+    db.tip.findOne({
+        where: {
+            id: updateTipId
+        }
+    }).then(function (response) {
+        response.naziv = updateTipNaziv;
+        response.save().then(function (response) {
+                return res.send(JSON.stringify(response));
+            },
+            function (error) {
+                return res.send(error.message);
+            });
+        console.log(response)
+    })
+})
+
+
+
+/*
+    ****************************************************
+                        STUDENT
+    ****************************************************
+*/
+
+/*
+    **CREATE**
+*/
+app.post('/v2/student', function (req, res) {
+    var nazivStudenta = req.body.ime;
+    var indexStudenta = req.body.index;
+    db.student.create({
+        ime: nazivStudenta,
+        index: indexStudenta
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+/*
+    **READ**
+*/
+app.get('/v2/studenti', function (req, res) {
+    db.student.findAll().then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+app.get('/v2/student/:id', function (req, res) {
+    var studentId = req.params.id;
+    db.student.findOne({
+        where: {
+            id: studentId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    })
+});
+
+
+/*
+    **DELETE**
+*/
+app.delete('/v2/student/:id', function (req, res) {
+    var izbrisiStudentaId = req.params.id;
+    db.student.destroy({
+        where: {
+            id: izbrisiStudentaId
+        }
+    }).then(function (response) {
+        return res.send(JSON.stringify(response));
+    }, function (error) {
+        return res.send(error.message);
+    });
+})
+
+
+/*
+    **UPDATE**
+*/
+app.put('/v2/student/:id', function (req, res) {
+    var updateStudentId = req.params.id;
+    var updateStudentNaziv = req.body.ime;
+    var updateStudentIndex = req.body.index;
+    //console.log(updatePredmetId + " " + updatePredmetNaziv)
+    db.student.findOne({
+        where: {
+            id: updateStudentId
+        }
+    }).then(function (response) {
+        response.ime = updateStudentNaziv;
+        response.index = updateStudentIndex;
+        response.save().then(function (response) {
+                return res.send(JSON.stringify(response));
+            },
+            function (error) {
+                return res.send(error.message);
+            });
+        console.log(response)
+    })
+})
+
+
 app.listen(3000);
