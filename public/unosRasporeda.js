@@ -7,7 +7,7 @@ dajPredmeteIAktivnost();
 
 function dajPredmeteIAktivnost() {
     $.ajax({
-            url: "http://localhost:3000/predmeti",
+            url: "http://localhost:3000/v2/predmeti",
             type: 'GET',
             dataType: 'json'
         })
@@ -16,7 +16,7 @@ function dajPredmeteIAktivnost() {
                 listaPredmeta.push(predmet.naziv);
             }
             $.ajax({
-                    url: "http://localhost:3000/aktivnosti",
+                    url: "http://localhost:3000/v2/aktivnosti",
                     type: 'GET',
                     dataType: 'json'
                 })
@@ -34,7 +34,7 @@ function dajPredmeteIAktivnost() {
 
 function izbrisiPredmet(predmet) {
     $.ajax({
-            url: "http://localhost:3000/predmet/" + predmet,
+            url: "http://localhost:3000/z3/predmet/" + predmet,
             method: 'DELETE'
         })
         .done(function (res) {
@@ -51,7 +51,7 @@ function posaljiPredmetIAktivnost(nazivPredmeta, nazivAktivnosti, vrijemePocetka
     };
     var myData = JSON.stringify(obj);
     $.ajax({
-            url: "http://localhost:3000/predmet",
+            url: "http://localhost:3000/z3/predmet",
             type: 'POST',
             data: myData,
             dataType: 'json',
@@ -67,8 +67,9 @@ function posaljiPredmetIAktivnost(nazivPredmeta, nazivAktivnosti, vrijemePocetka
                 dan: danUSedmici
             }
             var myData2 = JSON.stringify(obj2);
+            console.log(myData2)
             $.ajax({
-                    url: "http://localhost:3000/aktivnost",
+                    url: "http://localhost:3000/z3/aktivnost",
                     type: 'POST',
                     data: myData2,
                     dataType: 'json',
@@ -103,7 +104,7 @@ function posaljiAktivnost(nazivPredmeta, nazivAktivnosti, vrijemePocetka, vrijem
     }
     var myData = JSON.stringify(obj);
     $.ajax({
-            url: "http://localhost:3000/aktivnost",
+            url: "http://localhost:3000/z3/aktivnost",
             type: 'POST',
             data: myData,
             dataType: 'json',
@@ -139,6 +140,7 @@ function dodajAktivnost() {
     var danUSedmici = document.getElementById('day').value;
 
     var predmetPostoji = listaPredmeta.includes(nazivPredmeta);
+
 
     if (predmetPostoji) {
         posaljiAktivnost(nazivPredmeta, nazivAktivnosti, vrijemePocetka, vrijemeKraja, danUSedmici);

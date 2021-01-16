@@ -59,14 +59,14 @@ database.tip.hasMany(database.aktivnost, {
 
 database.student.belongsToMany(database.grupa, {
     through: 'studentGrupa',
-    as: 'grupe',
-    foreignKey: 'id'
+    as: 'Grupe',
+    foreignKey: 'idStudenta'
 });
 
 database.grupa.belongsToMany(database.student, {
     through: 'studentGrupa',
-    as: 'studenti',
-    foreignKey: 'id'
+    as: 'Studenti',
+    foreignKey: 'idGrupe'
 });
 
 module.exports = database;
