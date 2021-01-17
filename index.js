@@ -175,12 +175,12 @@ app.get('/v1/predmeti', function (req, res) {
     return res.json(predmeti);
 });
 
-app.get('/aktivnosti', function (req, res) {
+app.get('/v1/aktivnosti', function (req, res) {
     var aktivnosti = dajAktivnostiIzDatoteke();
     return res.json(aktivnosti);
 });
 
-app.get('/predmet/:naziv/aktivnost/', function (req, res) {
+app.get('/v1/predmet/:naziv/aktivnost/', function (req, res) {
     var parametar = req.params.naziv;
     var aktivnosti = dajAktivnostiZaPredmet(parametar);
 
@@ -445,7 +445,6 @@ app.put('/v2/predmet/:id', function (req, res) {
 
 /*
     **CREATE**
-    todo:null key kad dodajem
 */
 app.post('/v2/grupa', function (req, res) {
     var nazivGrupe = req.body.naziv;
@@ -706,7 +705,7 @@ app.delete('/v2/dan/:id', function (req, res) {
 /*
  **UPDATE**
  */
-app.put('/v2/aktivnost/:id', function (req, res) {
+app.put('/v2/dan/:id', function (req, res) {
     var updateDanId = req.params.id;
     var updateDanNaziv = req.body.naziv;
     //console.log(updatePredmetId + " " + updatePredmetNaziv)
@@ -932,10 +931,7 @@ app.post('/v2/studenti', function (req, res) {
                         }).then(function (response) {
                                 //console.log(response + " " + grupaZaStudente)
                                 response.setGrupe(grupaZaStudente);
-                            },
-                            function (error) {
-                                console.log("AAAAAAAAAA " + error);
-                            })
+                            });
                     } else {
                         //student sa istim indexom postoji
                         returnArray.push('Student ' + studentiZaDodati[i].ime + ' nije kreiran jer postoji student ' + postojeciStudent2.ime + ' sa istim indexom ' + postojeciStudent2.index);
@@ -948,7 +944,7 @@ app.post('/v2/studenti', function (req, res) {
                             index: studentiZaDodati[i].index
                         }
                     })
-                    console.log(student.ime)
+                    //console.log(student.ime)
                     var grupeStudenta = await student.getGrupe();
                     var indexGrupe = 0;
                     var postoji = false;
@@ -969,10 +965,7 @@ app.post('/v2/studenti', function (req, res) {
             }
             return res.send(returnArray);
             //console.log(returnArray)
-        },
-        function (error) {
-            console.log("BBBBBBB " + error)
-        })
+        });
 })
 
 
@@ -998,7 +991,7 @@ app.post('/z3/predmet', async function (req, res) {
 app.delete('/z3/predmet/:naziv', async function (req, res) {
     var predmet = req.params.naziv;
     db.predmet.destroy({
-        where: {
+        where : {
             naziv: predmet
         }
     }).then(function (response) {
@@ -1026,7 +1019,7 @@ function podudarneAktivnostiZaDan(aktivnosti, dodajAktivnost, nazivDana) {
     }
     return false;
 }
-
+/*
 function validirajAktivnost(aktivnost) {
     postoji = false;
     for (let i = 0; i < dani.length; i++) {
@@ -1051,7 +1044,7 @@ function validirajAktivnost(aktivnost) {
     }
     return true;
 }
-
+*/
 
 app.post('/z3/aktivnost', async function (req, res) {
     var danZaDodati = req.body.dan;
