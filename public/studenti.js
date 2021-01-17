@@ -55,6 +55,7 @@ function dodajStudente() {
             tekstualnoPolje.value = res.join('\n');
         })
         .fail(function (error) {
+            console.log(error)
             tekstualnoPolje.value = error.statusText;
         })
 }

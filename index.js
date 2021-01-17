@@ -931,7 +931,10 @@ app.post('/v2/studenti', function (req, res) {
                         }).then(function (response) {
                                 //console.log(response + " " + grupaZaStudente)
                                 response.setGrupe(grupaZaStudente);
-                            });
+                            },
+                            function (error) {
+                                console.log("AAAAAAAAAA " + error);
+                            })
                     } else {
                         //student sa istim indexom postoji
                         returnArray.push('Student ' + studentiZaDodati[i].ime + ' nije kreiran jer postoji student ' + postojeciStudent2.ime + ' sa istim indexom ' + postojeciStudent2.index);
@@ -944,7 +947,7 @@ app.post('/v2/studenti', function (req, res) {
                             index: studentiZaDodati[i].index
                         }
                     })
-                    //console.log(student.ime)
+                    console.log(student.ime)
                     var grupeStudenta = await student.getGrupe();
                     var indexGrupe = 0;
                     var postoji = false;
@@ -965,7 +968,10 @@ app.post('/v2/studenti', function (req, res) {
             }
             return res.send(returnArray);
             //console.log(returnArray)
-        });
+        },
+        function (error) {
+            console.log("BBBBBBB " + error)
+        })
 })
 
 
@@ -1019,7 +1025,7 @@ function podudarneAktivnostiZaDan(aktivnosti, dodajAktivnost, nazivDana) {
     }
     return false;
 }
-/*
+
 function validirajAktivnost(aktivnost) {
     postoji = false;
     for (let i = 0; i < dani.length; i++) {
@@ -1044,7 +1050,7 @@ function validirajAktivnost(aktivnost) {
     }
     return true;
 }
-*/
+
 
 app.post('/z3/aktivnost', async function (req, res) {
     var danZaDodati = req.body.dan;
