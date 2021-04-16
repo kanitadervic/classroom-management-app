@@ -1,8 +1,8 @@
 const Sequlize = require("sequelize");
 
 module.exports = function (sequelize, DataTypes) {
-    return Dan = sequelize.define('Dan', {
-        naziv: {
+    return Group = sequelize.define('Group', {
+        name: {
             type: Sequlize.STRING,
             unique: true
         }

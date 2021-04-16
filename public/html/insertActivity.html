@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Planning</title>
+    <link rel="stylesheet" type="text/css" href="../css/insertActivity.css">
+    <link rel="stylesheet" type="text/css" href="../css/navbar.css">
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+    <ul>
+        <li><a href="timetable.html">Time Schedule</a></li>
+        <li><a href="activity.html">Activities</a></li>
+        <li><a class="active" href="insertActivity.html">Planning</a></li>
+        <li><a href="studentInfo.html">Info</a></li>
+        <li><a href="addStudents.html">Add students</a></li>
+        <li><a href="creatingTimetableTest.html">Timetable Test</a></li>
+    </ul>
+    <div id="wrapper">
+        <fieldset>
+            <form>
+                <div class="row">
+                    <label for='subject'>Subject:</label>
+                    <input type='text' id='subject' />
+                </div>
+                <div class="row">
+                    <label>Type:</label>
+                    <input type='text' id='activity' />
+                </div>
+                <div class="row">
+                    <label>Start:</label>
+                    <input type='time' id='timeStart' />
+                </div>
+                <div class="row">
+                    <label>End:</label>
+                    <input type='time' id='timeEnd' />
+                </div>
+                <div class="row">
+                    <label>Weekday:</label>
+                    <select id='day'>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <input id="addButton" type="button" onclick="addActivity()" value="Add activity">
+                </div>
+
+            </form>
+
+        </fieldset>
+    </div>
+    <p id='message'>
+
+    </p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../js/timetableManipulation.js"></script>
+</body>
+
+</html>

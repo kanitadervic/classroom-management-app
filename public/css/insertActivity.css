@@ -34,8 +34,9 @@ fieldset {
 
 input,
 select {
-    width: 15vw;
+    width: 15pc;
     padding: 12px 20px;
+    margin-left: auto;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -43,41 +44,32 @@ select {
     margin-right: 0px;
     text-align: left;
     margin: 20px 20px auto auto;
-    margin-left: 17vw;
     color: #3F6DA9;
     background-color: white;
 }
 
 
 label {
-    display: flex;
+    display: table-cell;
+    margin: auto 50px auto 20px;
     text-align: right;
     white-space: nowrap;
     vertical-align: middle;
-    margin-left: 21vw!important;
 }
 
-textarea{
-    resize: none;
-    height: 20vh;
-    width: 50vw;
-}
-
-#poruka {
-    padding-left: 45vw !important;
-    position: absolute !important;
+#message {
+    padding-left: 45vw!important;
+    position: absolute!important;
     margin: 80vh 0;
     font-size: 1pc;
     font-weight: bold;
 }
 
-#dodajButton {
+#addButton {
     text-align: center;
     font-weight: bold;
-    width: 15vw;
-    margin-left: 17vw;
-    color: #3F6DA9;
 }
+
 
 @media only screen and (max-width: 600px) {
     .row {
@@ -105,7 +97,7 @@ textarea{
         min-height: 250px;
     }
 
-    #poruka{
+    #message{
         padding-left: 35vw!important;
         position: absolute!important;
         top: 30vh;

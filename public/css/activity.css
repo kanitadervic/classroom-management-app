@@ -13,11 +13,10 @@ body {
   background-color: #B4C7DC
 }
 
-.sljedeca-aktivnost,
-.prethodna-aktivnost {
-  border: 2px solid;
+.next-activity,
+.previous-activity {
   border-radius: 50px;
-  border-color: #3F6DA9;
+  border: 2px solid #3F6DA9;
   padding: 20px;
   width: 250px;
   height: 250px;
@@ -25,10 +24,9 @@ body {
   overflow: auto;
 }
 
-.trenutna-aktivnost {
-  border: 2px solid;
+.current-activity {
   border-radius: 10px;
-  border-color: #3F6DA9;
+  border: 2px solid #3F6DA9;
   padding: 15px;
   margin-bottom: 50px;
   width: 300px;
@@ -38,10 +36,10 @@ body {
 }
 
 legend {
-  text-align: center;
+  margin: 0 auto;
 }
 
-.aktivnost {
+.activity {
   padding: 35px 0;
   text-align: center;
   font-size: 25px;
@@ -63,11 +61,11 @@ legend {
     display: inline-block
   }
 
-  .prethodna-aktivnost {
+  .previous-activity {
     visibility: hidden;
   }
 
-  .sljedeca-aktivnost{
+  .next-activity{
     margin-left: 8%
   } 
 

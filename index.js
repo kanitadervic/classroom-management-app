@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const pocetak = 8;
-const kraj = 20;
-const dani = ['Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak'];
+const globalStart = 8;
+const globalEnd = 20;
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -12,155 +12,152 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-const db = require('./database.js');
-const student = require('./student.js');
-const aktivnost = require('./aktivnost.js');
+const db = require('./database/database.js');
 
 db.sequelize.sync({
     force: true
 }).then(function () {
     initialize().then(function () {
-        console.log("Gotovo kreiranje tabela i ubacivanje pocetnih podataka!");
-        //process.exit();
+        console.log("Created tables and inserted basic info!!");
     });
 });
 
 function initialize() {
     return new Promise(function (resolve, reject) {
-        db.dan.create({
-            naziv: "Ponedjeljak"
+        db.day.create({
+            name: "Monday"
         });
-        db.dan.create({
-            naziv: "Utorak"
+        db.day.create({
+            name: "Tuesday"
         });
-        db.dan.create({
-            naziv: "Srijeda"
+        db.day.create({
+            name: "Wednesday"
         });
-        db.dan.create({
-            naziv: "Četvrtak"
+        db.day.create({
+            name: "Thursday"
         });
-        db.dan.create({
-            naziv: "Petak"
+        db.day.create({
+            name: "Friday"
         });
-        resolve("Ucitao dane");
+        resolve("Days inserted");
     })
 }
 
 
-function dajPredmeteIzDatoteke() {
-    let datoteka = [];
+function getSubjectsFromFile() {
+    let file = [];
 
-    let predmeti = [];
+    let subjects = [];
     try {
-        datoteka = fs.readFileSync('predmeti.txt', 'utf-8');
+        file = fs.readFileSync('subjects.txt', 'utf-8');
     } catch (error) {
-        return 'Datoteka predmeti.txt ne postojii!';
+        return 'File subjects.txt does not exist!';
     }
 
-    let izdvoji = datoteka.split('\n');
+    let subject = file.split('\n');
 
-    for (let linija of izdvoji) {
-        if (linija != '') {
-            predmeti.push({
-                naziv: linija
+    for (let s of subject) {
+        if (s != '') {
+            subjects.push({
+                name: s
             });
         }
     }
-    return predmeti;
+    return subjects;
 }
 
-function dajAktivnostiIzDatoteke() {
-    let datoteka = [];
+function getActivitiesFromFile() {
+    let file = [];
 
-    let aktivnosti = [];
+    let activities = [];
     try {
-        datoteka = fs.readFileSync('aktivnosti.txt', 'utf-8');
+        file = fs.readFileSync('activities.txt', 'utf-8');
     } catch (error) {
-        return 'Datoteka aktivnosti.txt ne postojii!';
+        return 'File activities.txt does not exist!';
     }
 
-    let izdvoji = datoteka.split('\n');
+    let activity = file.split('\n');
 
-    for (let linija of izdvoji) {
-        let podaci = linija.split(',');
-        if (podaci.length == 5 || podaci[0] == '') {
-            if (podaci.length == 5) {
-                aktivnosti.push({
-                    naziv: podaci[0],
-                    tip: podaci[1],
-                    pocetak: parseFloat(podaci[2]),
-                    kraj: parseFloat(podaci[3]),
-                    dan: podaci[4]
+    for (let a of activity) {
+        let activityData = a.split(',');
+        if (activityData.length == 5 || activityData[0] == '') {
+            if (activityData.length == 5) {
+                activities.push({
+                    name: activityData[0],
+                    type: activityData[1],
+                    start: parseFloat(activityData[2]),
+                    end: parseFloat(activityData[3]),
+                    day: activityData[4]
                 });
             }
 
         }
     }
-    return aktivnosti;
+    return activities;
 }
 
-function dajAktivnostiZaPredmet(nazivPredmeta) {
-    let datoteka = [];
+function getActivitiesForSubject(subjectName) {
+    let file = [];
 
-    let aktivnosti = [];
+    let activities = [];
     try {
-        datoteka = fs.readFileSync('aktivnosti.txt', 'utf-8');
+        file = fs.readFileSync('activities.txt', 'utf-8');
     } catch (error) {
-        return 'Datoteka aktivnosti.txt ne postojii!';
+        return 'File activities.txt does not exist!';
     }
 
-    let izdvoji = datoteka.split('\n');
-    for (let linija of izdvoji) {
-        let podaci = linija.split(',');
-        if (podaci.length == 5) {
-            if (podaci[0] == nazivPredmeta) {
-                aktivnosti.push({
-                    naziv: podaci[0],
-                    tip: podaci[1],
-                    pocetak: parseFloat(podaci[2]),
-                    kraj: parseFloat(podaci[3]),
-                    dan: podaci[4]
+    let activity = file.split('\n');
+    for (let a of activity) {
+        let activityData = a.split(',');
+        if (activityData.length == 5) {
+            if (activityData[0] == subjectName) {
+                activities.push({
+                    name: activityData[0],
+                    type: activityData[1],
+                    start: parseFloat(activityData[2]),
+                    end: parseFloat(activityData[3]),
+                    day: activityData[4]
                 });
             }
         }
     }
-    return aktivnosti;
+    return activities;
 }
 
-function validirajAktivnost(aktivnost) {
-    postoji = false;
-    for (let i = 0; i < dani.length; i++) {
-        if (dani[i] == aktivnost.dan) {
-            postoji = true;
+function validateActivity(activity) {
+    exists = false;
+    for (let i = 0; i < days.length; i++) {
+        if (days[i] == activity.dan) {
+            exists = true;
         }
     }
 
-    if (aktivnost.naziv == '' ||
-        aktivnost.naziv == null ||
-        aktivnost.tip == null ||
-        aktivnost.tip == '' ||
-        aktivnost.pocetak < pocetak || aktivnost.kraj > kraj ||
-        aktivnost.pocetak > aktivnost.kraj ||
-        aktivnost.pocetak == null ||
-        aktivnost.kraj == null ||
-        aktivnost.pocetak % 0.5 != 0 ||
-        aktivnost.kraj % 0.5 != 0 ||
-        !postoji
+    if (activity.name == '' ||
+        activity.naziv == null ||
+        activity.type == null ||
+        activity.type == '' ||
+        activity.start < globalStart || activity.end > globalEnd ||
+        activity.start > activity.end ||
+        activity.start == null ||
+        activity.end == null ||
+        activity.start % 0.5 != 0 ||
+        activity.end % 0.5 != 0 ||
+        !exists
     ) {
         return false;
     }
     return true;
 }
 
-function podudarnaAktivnost(aktivnosti, dodajAktivnost) {
-    for (let i = 0; i < aktivnosti.length; i++) {
-        if (aktivnosti[i].dan == dodajAktivnost.dan) {
-            if (aktivnosti[i].pocetak == dodajAktivnost.pocetak ||
-                aktivnosti[i].kraj == dodajAktivnost.kraj ||
-                (aktivnosti[i].pocetak < dodajAktivnost.pocetak && aktivnosti[i].kraj > dodajAktivnost.kraj) ||
-                (dodajAktivnost.pocetak < aktivnosti[i].pocetak && dodajAktivnost.kraj > aktivnosti[i].kraj) ||
-                (aktivnosti[i].pocetak < dodajAktivnost.pocetak && aktivnosti[i].kraj > dodajAktivnost.pocetak) ||
-                (dodajAktivnost.pocetak < aktivnosti[i].pocetak && dodajAktivnost.kraj > aktivnosti[i].pocetak)
+function intersectingActivity(activities, newActivity) {
+    for (let i = 0; i < activities.length; i++) {
+        if (activities[i].day == newActivity.day) {
+            if (activities[i].start == newActivity.start ||
+                activities[i].end == newActivity.end ||
+                (activities[i].start < newActivity.start && activities[i].end > newActivity.end) ||
+                (newActivity.start < activities[i].start && newActivity.end > activities[i].end) ||
+                (activities[i].start < newActivity.start && activities[i].end > newActivity.start) ||
+                (newActivity.start < activities[i].start && newActivity.end > activities[i].start)
             ) {
                 return true;
             }
@@ -169,55 +166,55 @@ function podudarnaAktivnost(aktivnosti, dodajAktivnost) {
     return false;
 }
 
-app.get('/v1/predmeti', function (req, res) {
-    var predmeti = dajPredmeteIzDatoteke();
+app.get('/v1/subjects', function (req, res) {
+    var subjects = getSubjectsFromFile();
 
-    return res.json(predmeti);
+    return res.json(subjects);
 });
 
-app.get('/v1/aktivnosti', function (req, res) {
-    var aktivnosti = dajAktivnostiIzDatoteke();
-    return res.json(aktivnosti);
+app.get('/v1/activities', function (req, res) {
+    var activities = getActivitiesFromFile();
+    return res.json(activities);
 });
 
-app.get('/v1/predmet/:naziv/aktivnost/', function (req, res) {
-    var parametar = req.params.naziv;
-    var aktivnosti = dajAktivnostiZaPredmet(parametar);
+app.get('/v1/subject/:name/activities/', function (req, res) {
+    var param = req.params.name;
+    var activities = getActivitiesForSubject(param);
 
-    return res.json(aktivnosti);
+    return res.json(activities);
 });
 
-app.post('/v1/predmet', function (req, res) {
-    var dodajPredmet = req.body;
-    var predmeti = dajPredmeteIzDatoteke();
+app.post('/v1/subject', function (req, res) {
+    var newSubject = req.body;
+    var allSubjects = getSubjectsFromFile();
 
-    for (let i = 0; i < predmeti.length; i++) {
-        if (predmeti[i].naziv.valueOf().toLowerCase() == dodajPredmet.naziv.valueOf().toLowerCase()) {
+    for (let i = 0; i < allSubjects.length; i++) {
+        if (allSubjects[i].name.valueOf().toLowerCase() == newSubject.name.valueOf().toLowerCase()) {
             return res.json({
-                message: 'Naziv predmeta postoji!'
+                message: 'Subject already exists!'
             })
         }
     }
 
-    fs.appendFileSync('predmeti.txt', '\n' + dodajPredmet.naziv);
+    fs.appendFileSync('subjects.txt', '\n' + newSubject.name);
 
     return res.json({
-        message: 'Uspješno dodan predmet!'
+        message: 'Subject successfully added!'
     });
 });
 
-app.post('/v1/aktivnost', function (req, res) {
-    var dodajAktivnost = req.body;
-    var aktivnosti = dajAktivnostiIzDatoteke();
-    if (!validirajAktivnost(dodajAktivnost) || podudarnaAktivnost(aktivnosti, dodajAktivnost)) {
+app.post('/v1/activity', function (req, res) {
+    var newActivity = req.body;
+    var activities = getActivitiesFromFile();
+    if (!validateActivity(newActivity) || intersectingActivity(activities, newActivity)) {
         return res.json({
-            message: 'Aktivnost nije validna!'
+            message: 'Activity cannot be added!'
         });
     }
 
-    fs.appendFileSync('aktivnosti.txt', '\n' + dodajAktivnost.naziv + ',' + dodajAktivnost.tip + ',' + dodajAktivnost.pocetak + ',' + dodajAktivnost.kraj + ',' + dodajAktivnost.dan);
+    fs.appendFileSync('activities.txt', '\n' + newActivity.name + ',' + newActivity.type + ',' + newActivity.start + ',' + newActivity.end + ',' + newActivity.day);
     return res.json({
-        message: 'Uspješno dodana aktivnost!'
+        message: 'Activity successfully added!'
     });
 });
 
@@ -227,109 +224,109 @@ function removeEmptyLine(text) {
 }
 
 
-function obrisiAktivnostIzDatoteke(aktivnost) {
+function removeActivityFromFile(activity) {
     var fileContents;
     try {
-        fileContents = fs.readFileSync('aktivnosti.txt', 'utf-8')
+        fileContents = fs.readFileSync('activities.txt', 'utf-8')
     } catch (err) {
         return false;
     }
 
-    var string = new RegExp('(' + aktivnost + '.*)', 'g')
-    var novaDatoteka = fileContents.toString().replace(string, '');
-    novaDatoteka = removeEmptyLine(novaDatoteka);
+    var string = new RegExp('(' + activity + '.*)', 'g')
+    var newFileContents = fileContents.toString().replace(string, '');
+    newFileContents = removeEmptyLine(newFileContents);
     try {
-        fs.writeFileSync('aktivnosti.txt', novaDatoteka);
+        fs.writeFileSync('activities.txt', newFileContents);
     } catch (err) {
         return false;
     }
     return true
 }
 
-app.delete('/v1/aktivnost/:naziv', function (req, res) {
-    var izbrisiAktivnost = req.params.naziv;
+app.delete('/v1/activity/:name', function (req, res) {
+    var deleteActivity = req.params.name;
 
-    var uspjelo = obrisiAktivnostIzDatoteke(izbrisiAktivnost)
+    var successful = removeActivityFromFile(deleteActivity)
 
-    if (uspjelo) {
+    if (successful) {
         return res.json({
-            message: 'Uspješno obrisana aktivnost!'
+            message: 'Activity deleted!'
         })
     } else {
         return res.json({
-            message: 'Greška - aktivnost nije obrisana!'
+            message: 'Error - activity is not deleted!'
         })
     }
 })
 
-function obrisiPredmetIzDatoteke(predmet) {
+function removeSubjectFromFile(subject) {
     var fileContents;
     try {
-        fileContents = fs.readFileSync('predmeti.txt', 'utf-8')
+        fileContents = fs.readFileSync('subjects.txt', 'utf-8')
     } catch (err) {
         return false;
     }
-    var string = new RegExp('(' + predmet + '.*)', 'g')
-    var novaDatoteka = fileContents.toString().replace(string, '');
-    novaDatoteka = removeEmptyLine(novaDatoteka)
+    var string = new RegExp('(' + subject + '.*)', 'g')
+    var newFileContents = fileContents.toString().replace(string, '');
+    newFileContents = removeEmptyLine(newFileContents)
     try {
-        fs.writeFileSync('predmeti.txt', novaDatoteka);
+        fs.writeFileSync('subjects.txt', newFileContents);
     } catch (err) {
         return false;
     }
 
-    return obrisiAktivnostIzDatoteke(predmet);
+    return removeActivityFromFile(subject);
 }
 
-app.delete('/v1/predmet/:naziv', function (req, res) {
-    var izbrisiPredmet = req.params.naziv;
+app.delete('/v1/subject/:name', function (req, res) {
+    var removeSubject = req.params.name;
 
-    var uspjelo = obrisiPredmetIzDatoteke(izbrisiPredmet)
+    var successful = removeSubjectFromFile(removeSubject)
 
-    if (uspjelo) {
+    if (successful) {
         return res.json({
-            message: 'Uspješno obrisan predmet!'
+            message: 'Subject deleted!'
         })
     } else {
         return res.json({
-            message: 'Greška - predmet nije obrisan!'
+            message: 'Error - subject is not deleted!'
         })
     }
 
 });
 
-function obrisiSvePredmete() {
+function removeAllSubjects() {
     var fileContents;
     try {
-        fileContents = fs.readFileSync('predmeti.txt')
+        fileContents = fs.readFileSync('subjects.txt')
     } catch (err) {
         return false;
     }
     var string = new RegExp('\n(' + '.*)', 'g')
-    var novaDatoteka = fileContents.toString().replace((string), '');
+    var newFileContents = fileContents.toString().replace((string), '');
     string = new RegExp('(' + '.*)', 'g');
-    novaDatoteka = novaDatoteka.toString().replace(string, '');
+    newFileContents = newFileContents.toString().replace(string, '');
     try {
-        fs.writeFileSync('predmeti.txt', novaDatoteka);
+        fs.writeFileSync('subjects.txt', newFileContents);
     } catch (err) {
         return false;
     }
     return true;
 }
 
-function obrisiSveAktivnosti() {
+function removeAllActivities() {
     var fileContents;
     try {
-        fileContents = fs.readFileSync('aktivnosti.txt')
+        fileContents = fs.readFileSync('activities.txt')
     } catch (err) {
         return false;
     }
     var string = new RegExp('\n(' + '.*)', 'g')
-    var novaDatoteka = fileContents.toString().replace((string), '');
+    var newFileContents = fileContents.toString().replace((string), '');
     string = new RegExp('(' + '.*)', 'g');
-    novaDatoteka = novaDatoteka.toString().replace(string, '');
+    newFileContents = newFileContents.toString().replace(string, '');
     try {
-        fs.writeFileSync('aktivnosti.txt', novaDatoteka);
+        fs.writeFileSync('activities.txt', newFileContents);
     } catch (err) {
         return false;
     }
@@ -337,13 +334,13 @@ function obrisiSveAktivnosti() {
 }
 
 app.delete('/v1/all', function (req, res) {
-    if (obrisiSvePredmete() && obrisiSveAktivnosti()) {
+    if (removeAllSubjects() && removeAllActivities()) {
         return res.json({
-            message: 'Uspješno obrisan sadržaj datoteka!'
+            message: 'Files successfully deleted!'
         })
     } else {
         return res.json({
-            message: 'Greška - sadržaj datoteka nije moguće obrisati!'
+            message: 'Error - files cannot be deleted!'
         });
     }
 })
@@ -356,10 +353,11 @@ app.delete('/v1/all', function (req, res) {
 /*
  **CREATE**
  */
-app.post('/v2/predmet', function (req, res) {
-    var nazivPredmeta = req.body.naziv;
-    db.predmet.create({
-        naziv: nazivPredmeta
+app.post('/v2/subject', function (req, res) {
+    console.log(req.body)
+    var subjectName = req.body.name;
+    db.subject.create({
+        name: subjectName
     }).then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -370,19 +368,19 @@ app.post('/v2/predmet', function (req, res) {
 /*
  **READ**
  */
-app.get('/v2/predmeti', function (req, res) {
-    db.predmet.findAll().then(function (response) {
+app.get('/v2/subjects', function (req, res) {
+    db.subject.findAll().then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
         return res.send(error.message);
     })
 });
 
-app.get('/v2/predmet/:id', function (req, res) {
-    var predmetId = req.params.id;
-    db.predmet.findOne({
+app.get('/v2/subject/:id', function (req, res) {
+    var subjectId = req.params.id;
+    db.subject.findOne({
         where: {
-            id: predmetId
+            id: subjectId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -394,12 +392,12 @@ app.get('/v2/predmet/:id', function (req, res) {
 /*
  **DELETE**
  */
-app.delete('/v2/predmet/:id', function (req, res) {
-    var izbrisiPredmetId = req.params.id;
-    console.log(izbrisiPredmetId)
-    db.predmet.destroy({
+app.delete('/v2/subject/:id', function (req, res) {
+    var deleteSubject = req.params.id;
+    console.log(deleteSubject)
+    db.subject.destroy({
         where: {
-            id: izbrisiPredmetId
+            id: deleteSubject
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -412,16 +410,15 @@ app.delete('/v2/predmet/:id', function (req, res) {
 /*
  **UPDATE**
  */
-app.put('/v2/predmet/:id', function (req, res) {
-    var updatePredmetId = req.params.id;
-    var updatePredmetNaziv = req.body.naziv;
-    console.log(updatePredmetId + " " + updatePredmetNaziv)
-    db.predmet.findOne({
+app.put('/v2/subject/:id', function (req, res) {
+    var updateSubjectId = req.params.id;
+    var updateSubjectName = req.body.name;
+    db.subject.findOne({
         where: {
-            id: updatePredmetId
+            id: updateSubjectId
         }
     }).then(function (response) {
-        response.naziv = updatePredmetNaziv;
+        response.name = updateSubjectName;
         response.save().then(function (response) {
                 return res.send(JSON.stringify(response));
             },
@@ -446,12 +443,12 @@ app.put('/v2/predmet/:id', function (req, res) {
 /*
     **CREATE**
 */
-app.post('/v2/grupa', function (req, res) {
-    var nazivGrupe = req.body.naziv;
-    var predmetId = req.body.PredmetId;
-    db.grupa.create({
-        naziv: nazivGrupe,
-        PredmetId: predmetId
+app.post('/v2/group', function (req, res) {
+    var groupName = req.body.name;
+    var subjectId = req.body.SubjectId;
+    db.group.create({
+        name: groupName,
+        SubjectId: subjectId
     }).then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -462,19 +459,19 @@ app.post('/v2/grupa', function (req, res) {
 /*
  **READ**
  */
-app.get('/v2/grupe', function (req, res) {
-    db.grupa.findAll().then(function (response) {
+app.get('/v2/groups', function (req, res) {
+    db.group.findAll().then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
         return res.send(error.message);
     })
 });
 
-app.get('/v2/grupa/:id', function (req, res) {
-    var grupaId = req.params.id;
-    db.grupa.findOne({
+app.get('/v2/group/:id', function (req, res) {
+    var groupId = req.params.id;
+    db.group.findOne({
         where: {
-            id: grupaId
+            id: groupId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -487,12 +484,12 @@ app.get('/v2/grupa/:id', function (req, res) {
 /*
  **DELETE**
  */
-app.delete('/v2/grupa/:id', function (req, res) {
-    var izbrisiGrupuId = req.params.id;
-    console.log(izbrisiGrupuId)
-    db.grupa.destroy({
+app.delete('/v2/group/:id', function (req, res) {
+    var deleteGroupId = req.params.id;
+    console.log(deleteGroupId)
+    db.group.destroy({
         where: {
-            id: izbrisiGrupuId
+            id: deleteGroupId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -505,18 +502,17 @@ app.delete('/v2/grupa/:id', function (req, res) {
 /*
  **UPDATE**
  */
-app.put('/v2/grupa/:id', function (req, res) {
-    var updateGrupaId = req.params.id;
-    var updateGrupaNaziv = req.body.naziv;
-    var predmetId = req.body.PredmetId;
-    //console.log(updatePredmetId + " " + updatePredmetNaziv)
-    db.grupa.findOne({
+app.put('/v2/group/:id', function (req, res) {
+    var updateGroupId = req.params.id;
+    var updateGroupName = req.body.name;
+    var subjectId = req.body.SubjectId;
+    db.group.findOne({
         where: {
-            id: updateGrupaId
+            id: updateGroupId
         }
     }).then(function (response) {
-        response.naziv = updateGrupaNaziv;
-        response.PredmetId = predmetId;
+        response.name = updateGroupName;
+        response.SubjectId = subjectId;
         response.save().then(function (response) {
                 return res.send(JSON.stringify(response));
             },
@@ -538,22 +534,22 @@ app.put('/v2/grupa/:id', function (req, res) {
 /*
  **CREATE**
  */
-app.post('/v2/aktivnost', function (req, res) {
-    var nazivAktivnosti = req.body.naziv;
-    var pocetakAktivnosti = req.body.pocetak;
-    var krajAktivnosti = req.body.kraj;
-    var predmetId = req.body.PredmetId;
-    var grupaId = req.body.GrupaId;
-    var danId = req.body.DanId;
-    var tipId = req.body.TipId;
-    db.aktivnost.create({
-        naziv: nazivAktivnosti,
-        pocetak: pocetakAktivnosti,
-        kraj: krajAktivnosti,
-        PredmetId: predmetId,
-        GrupaId: grupaId,
-        DanId: danId,
-        TipId: tipId
+app.post('/v2/activity', function (req, res) {
+    var activityName = req.body.name;
+    var activityStart = req.body.start;
+    var activityEnd = req.body.end;
+    var subjectId = req.body.SubjectId;
+    var groupId = req.body.GroupId;
+    var dayId = req.body.DayId;
+    var typeId = req.body.TypeId;
+    db.activity.create({
+        name: activityName,
+        start: activityStart,
+        end: activityEnd,
+        SubjectId: subjectId,
+        GroupId: groupId,
+        DayId: dayId,
+        TypeId: typeId
     }).then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -564,19 +560,19 @@ app.post('/v2/aktivnost', function (req, res) {
 /*
  **READ**
  */
-app.get('/v2/aktivnosti', function (req, res) {
-    db.aktivnost.findAll().then(function (response) {
+app.get('/v2/activities', function (req, res) {
+    db.activity.findAll().then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
         return res.send(error.message);
     })
 });
 
-app.get('/v2/aktivnost/:id', function (req, res) {
-    var aktivnostId = req.params.id;
-    db.aktivnost.findOne({
+app.get('/v2/activity/:id', function (req, res) {
+    var activityId = req.params.id;
+    db.activity.findOne({
         where: {
-            id: aktivnostId
+            id: activityId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -589,11 +585,11 @@ app.get('/v2/aktivnost/:id', function (req, res) {
 /*
  **DELETE**
  */
-app.delete('/v2/aktivnost/:id', function (req, res) {
-    var izbrisiAktivnostId = req.params.id;
-    db.aktivnost.destroy({
+app.delete('/v2/activity/:id', function (req, res) {
+    var deleteActivityId = req.params.id;
+    db.activity.destroy({
         where: {
-            id: izbrisiAktivnostId
+            id: deleteActivityId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -606,28 +602,27 @@ app.delete('/v2/aktivnost/:id', function (req, res) {
 /*
  **UPDATE**
  */
-app.put('/v2/aktivnost/:id', function (req, res) {
-    var updateAktivnostId = req.params.id;
-    var updateAktivnostNaziv = req.body.naziv;
-    var updateAktivnostPocetak = req.body.pocetak;
-    var updateAktivnostKraj = req.body.kraj;
-    var predmetId = req.body.PredmetId;
-    var grupaId = req.body.GrupaId;
-    var danId = req.body.DanId;
-    var tipId = req.body.TipId;
-    //console.log(updatePredmetId + " " + updatePredmetNaziv)
-    db.aktivnost.findOne({
+app.put('/v2/activity/:id', function (req, res) {
+    var updateActivityId = req.params.id;
+    var updateActivityName = req.body.name;
+    var updateActivityStart = req.body.start;
+    var updateActivityEnd = req.body.end;
+    var subjectId = req.body.SubjectId;
+    var groupId = req.body.GroupId;
+    var dayId = req.body.DayId;
+    var typeId = req.body.TypeId;
+    db.activity.findOne({
         where: {
-            id: updateAktivnostId
+            id: updateActivityId
         }
     }).then(function (response) {
-        response.naziv = updateAktivnostNaziv;
-        response.pocetak = updateAktivnostPocetak;
-        response.kraj = updateAktivnostKraj;
-        response.PredmetId = predmetId;
-        response.GrupaId = grupaId;
-        response.DanId = danId;
-        response.TipId = tipId;
+        response.name = updateActivityName;
+        response.start = updateActivityStart;
+        response.end = updateActivityEnd;
+        response.SubjectId = subjectId;
+        response.GroupId = groupId;
+        response.DayId = dayId;
+        response.TypeId = typeId;
         response.save().then(function (response) {
                 return res.send(JSON.stringify(response));
             },
@@ -650,10 +645,10 @@ app.put('/v2/aktivnost/:id', function (req, res) {
 /*
  **CREATE**
  */
-app.post('/v2/dan', function (req, res) {
-    var nazivDana = req.body.naziv;
-    db.dan.create({
-        naziv: nazivDana
+app.post('/v2/day', function (req, res) {
+    var dayName = req.body.name;
+    db.day.create({
+        name: dayName
     }).then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -664,19 +659,19 @@ app.post('/v2/dan', function (req, res) {
 /*
  **READ**
  */
-app.get('/v2/dani', function (req, res) {
-    db.dan.findAll().then(function (response) {
+app.get('/v2/days', function (req, res) {
+    db.day.findAll().then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
         return res.send(error.message);
     })
 });
 
-app.get('/v2/dan/:id', function (req, res) {
-    var danId = req.params.id;
-    db.dan.findOne({
+app.get('/v2/day/:id', function (req, res) {
+    var dayId = req.params.id;
+    db.day.findOne({
         where: {
-            id: danId
+            id: dayId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -689,11 +684,11 @@ app.get('/v2/dan/:id', function (req, res) {
 /*
  **DELETE**
  */
-app.delete('/v2/dan/:id', function (req, res) {
-    var izbrisiDanId = req.params.id;
-    db.dan.destroy({
+app.delete('/v2/day/:id', function (req, res) {
+    var deleteDayId = req.params.id;
+    db.day.destroy({
         where: {
-            id: izbrisiDanId
+            id: deleteDayId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -705,16 +700,15 @@ app.delete('/v2/dan/:id', function (req, res) {
 /*
  **UPDATE**
  */
-app.put('/v2/dan/:id', function (req, res) {
-    var updateDanId = req.params.id;
-    var updateDanNaziv = req.body.naziv;
-    //console.log(updatePredmetId + " " + updatePredmetNaziv)
-    db.dan.findOne({
+app.put('/v2/day/:id', function (req, res) {
+    var updateDayId = req.params.id;
+    var updateDayName = req.body.name;
+    db.day.findOne({
         where: {
-            id: updateDanId
+            id: updateDayId
         }
     }).then(function (response) {
-        response.naziv = updateDanNaziv;
+        response.name = updateDayName;
         response.save().then(function (response) {
                 return res.send(JSON.stringify(response));
             },
@@ -735,10 +729,10 @@ app.put('/v2/dan/:id', function (req, res) {
 /*
  **CREATE**
  */
-app.post('/v2/tip', function (req, res) {
-    var nazivTipa = req.body.naziv;
-    db.tip.create({
-        naziv: nazivTipa
+app.post('/v2/type', function (req, res) {
+    var typeName = req.body.name;
+    db.type.create({
+        name: typeName
     }).then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -749,19 +743,19 @@ app.post('/v2/tip', function (req, res) {
 /*
  **READ**
  */
-app.get('/v2/tipovi', function (req, res) {
-    db.tip.findAll().then(function (response) {
+app.get('/v2/types', function (req, res) {
+    db.type.findAll().then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
         return res.send(error.message);
     })
 });
 
-app.get('/v2/tip/:id', function (req, res) {
-    var tipId = req.params.id;
-    db.tip.findOne({
+app.get('/v2/type/:id', function (req, res) {
+    var typeId = req.params.id;
+    db.type.findOne({
         where: {
-            id: tipId
+            id: typeId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -774,11 +768,11 @@ app.get('/v2/tip/:id', function (req, res) {
 /*
  **DELETE**
  */
-app.delete('/v2/tip/:id', function (req, res) {
-    var izbrisiTipId = req.params.id;
-    db.tip.destroy({
+app.delete('/v2/type/:id', function (req, res) {
+    var deleteTypeId = req.params.id;
+    db.type.destroy({
         where: {
-            id: izbrisiTipId
+            id: deleteTypeId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -791,16 +785,15 @@ app.delete('/v2/tip/:id', function (req, res) {
 /*
  **UPDATE**
  */
-app.put('/v2/tip/:id', function (req, res) {
-    var updateTipId = req.params.id;
-    var updateTipNaziv = req.body.naziv;
-    //console.log(updatePredmetId + " " + updatePredmetNaziv)
-    db.tip.findOne({
+app.put('/v2/type/:id', function (req, res) {
+    var updateTypeId = req.params.id;
+    var updateTypeName = req.body.name;
+    db.type.findOne({
         where: {
-            id: updateTipId
+            id: updateTypeId
         }
     }).then(function (response) {
-        response.naziv = updateTipNaziv;
+        response.name = updateTypeName;
         response.save().then(function (response) {
                 return res.send(JSON.stringify(response));
             },
@@ -823,11 +816,11 @@ app.put('/v2/tip/:id', function (req, res) {
  **CREATE**
  */
 app.post('/v2/student', function (req, res) {
-    var nazivStudenta = req.body.ime;
-    var indexStudenta = req.body.index;
+    var studentName = req.body.ime;
+    var studentIndex = req.body.index;
     db.student.create({
-        ime: nazivStudenta,
-        index: indexStudenta
+        name: studentName,
+        index: studentIndex
     }).then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -838,7 +831,7 @@ app.post('/v2/student', function (req, res) {
 /*
  **READ**
  */
-app.get('/v2/studenti', function (req, res) {
+app.get('/v2/students', function (req, res) {
     db.student.findAll().then(function (response) {
         return res.send(JSON.stringify(response));
     }, function (error) {
@@ -864,10 +857,10 @@ app.get('/v2/student/:id', function (req, res) {
  **DELETE**
  */
 app.delete('/v2/student/:id', function (req, res) {
-    var izbrisiStudentaId = req.params.id;
+    var deleteStudentId = req.params.id;
     db.student.destroy({
         where: {
-            id: izbrisiStudentaId
+            id: deleteStudentId
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -882,15 +875,14 @@ app.delete('/v2/student/:id', function (req, res) {
  */
 app.put('/v2/student/:id', function (req, res) {
     var updateStudentId = req.params.id;
-    var updateStudentNaziv = req.body.ime;
+    var updateStudentName = req.body.ime;
     var updateStudentIndex = req.body.index;
-    //console.log(updatePredmetId + " " + updatePredmetNaziv)
     db.student.findOne({
         where: {
             id: updateStudentId
         }
     }).then(function (response) {
-        response.ime = updateStudentNaziv;
+        response.name = updateStudentName;
         response.index = updateStudentIndex;
         response.save().then(function (response) {
                 return res.send(JSON.stringify(response));
@@ -902,72 +894,66 @@ app.put('/v2/student/:id', function (req, res) {
     })
 })
 
-app.post('/v2/studenti', function (req, res) {
+app.post('/v2/students', function (req, res) {
     var returnArray = [];
-    var studentiZaDodati = req.body.studenti;
-    var grupa = req.body.grupa;
-    console.log(grupa)
-    //console.log(studentiZaDodati.length)
+    var newStudents = req.body.students;
+    var group = req.body.group;
     db.student.findAll().then(async function (response) {
-            var grupaZaStudente = await db.grupa.findOne({
+            var groupForStudents = await db.group.findOne({
                 where: {
-                    naziv: grupa
+                    name: group
                 }
             })
-            var postojeciStudenti = JSON.parse(JSON.stringify(response));
-            //console.log(postojeciStudenti.length)
-            for (let i = 0; i < studentiZaDodati.length; i++) {
-                var postojeciStudent = postojeciStudenti.find(s => s.ime == studentiZaDodati[i].ime && s.index == studentiZaDodati[i].index);
+            var existingStudents = JSON.parse(JSON.stringify(response));
+            for (let i = 0; i < newStudents.length; i++) {
+                var existingStudent = existingStudents.find(s => s.ime == newStudents[i].ime && s.index == newStudents[i].index);
 
-                if (!postojeciStudent) {
+                if (!existingStudent) {
                     //ne postoji student sa podudarnim imenom i prezimenom, treba provjeriti postoji li student sa istim indexom
-                    var postojeciStudent2 = postojeciStudenti.find(s => s.index == studentiZaDodati[i].index);
+                    var existingStudent2 = existingStudents.find(s => s.index == newStudents[i].index);
 
-                    if (!postojeciStudent2) {
+                    if (!existingStudent2) {
                         //student ne postoji, dodati u bazu
                         db.student.create({
-                            ime: studentiZaDodati[i].ime,
-                            index: studentiZaDodati[i].index
+                            name: newStudents[i].name,
+                            index: newStudents[i].index
                         }).then(function (response) {
-                                //console.log(response + " " + grupaZaStudente)
-                                response.setGrupe(grupaZaStudente);
+                                response.setGroups(groupForStudents);
                             },
                             function (error) {
                                 console.log("AAAAAAAAAA " + error);
                             })
                     } else {
                         //student sa istim indexom postoji
-                        returnArray.push('Student ' + studentiZaDodati[i].ime + ' nije kreiran jer postoji student ' + postojeciStudent2.ime + ' sa istim indexom ' + postojeciStudent2.index);
+                        returnArray.push('Student ' + newStudents[i].ime + ' not created because student ' + existingStudent2.ime + ' has the same index ' + existingStudent2.index);
                     }
                 } else {
                     //postoji student sa istim imenom i prezimenom, update grupu
                     var student = await db.student.findOne({
                         where: {
-                            ime: studentiZaDodati[i].ime,
-                            index: studentiZaDodati[i].index
+                            name: newStudents[i].name,
+                            index: newStudents[i].index
                         }
                     })
-                    console.log(student.ime)
-                    var grupeStudenta = await student.getGrupe();
-                    var indexGrupe = 0;
-                    var postoji = false;
-                    for (let k = 0; k < grupeStudenta.length; k++) {
-                        if (grupeStudenta[k].dataValues.PredmetId == grupaZaStudente.dataValues.PredmetId) {
-                            indexGrupe = k;
-                            postoji = true;
+                    var studentGroups = await student.getGroups();
+                    var groupIndex = 0;
+                    var exists = false;
+                    for (let k = 0; k < studentGroups.length; k++) {
+                        if (studentGroups[k].dataValues.SubjectId == groupForStudents.dataValues.SubjecId) {
+                            groupIndex = k;
+                            exists = true;
                         }
                     }
-                    if (postoji) {
-                        await student.removeGrupe(grupeStudenta[indexGrupe]);
-                        await student.addGrupe(grupaZaStudente);
+                    if (exists) {
+                        await student.removeGroups(studentGroups[groupIndex]);
+                        await student.addGroups(groupForStudents);
                     } else {
-                        await student.addGrupe(grupaZaStudente)
+                        await student.addGroups(groupForStudents)
                     }
 
                 }
             }
             return res.send(returnArray);
-            //console.log(returnArray)
         },
         function (error) {
             console.log("BBBBBBB " + error)
@@ -979,26 +965,26 @@ app.post('/v2/studenti', function (req, res) {
                 ZADATAK 3                   
 */
 
-app.post('/z3/predmet', async function (req, res) {
-    var noviPredmet = req.body.naziv;
-    db.predmet.findOrCreate({
+app.post('/z3/subject', async function (req, res) {
+    var newSubject = req.body.name;
+    db.subject.findOrCreate({
         where: {
-            naziv: noviPredmet
+            name: newSubject
         }
     }).then(function (response) {
         return res.json({
-            message: "Akcija za predmet uspješna!"
+            message: "Success!"
         })
     }, function (error) {
         console.log(error.message)
     })
 })
 
-app.delete('/z3/predmet/:naziv', async function (req, res) {
-    var predmet = req.params.naziv;
-    db.predmet.destroy({
+app.delete('/z3/subject/:name', async function (req, res) {
+    var subject = req.params.name;
+    db.subject.destroy({
         where : {
-            naziv: predmet
+            name: subject
         }
     }).then(function (response) {
         return res.send(JSON.stringify(response));
@@ -1008,15 +994,15 @@ app.delete('/z3/predmet/:naziv', async function (req, res) {
 
 })
 
-function podudarneAktivnostiZaDan(aktivnosti, dodajAktivnost, nazivDana) {
-    if (nazivDana == dodajAktivnost.dan) {
-        for (let i = 0; i < aktivnosti.length; i++) {
-            if (aktivnosti[i].pocetak == dodajAktivnost.pocetak ||
-                aktivnosti[i].kraj == dodajAktivnost.kraj ||
-                (aktivnosti[i].pocetak < dodajAktivnost.pocetak && aktivnosti[i].kraj > dodajAktivnost.kraj) ||
-                (dodajAktivnost.pocetak < aktivnosti[i].pocetak && dodajAktivnost.kraj > aktivnosti[i].kraj) ||
-                (aktivnosti[i].pocetak < dodajAktivnost.pocetak && aktivnosti[i].kraj > dodajAktivnost.pocetak) ||
-                (dodajAktivnost.pocetak < aktivnosti[i].pocetak && dodajAktivnost.kraj > aktivnosti[i].pocetak)
+function intersectingActivitiesForDay(allActivities, newActivity, dayName) {
+    if (dayName == newActivity.day) {
+        for (let i = 0; i < allActivities.length; i++) {
+            if (allActivities[i].start == newActivity.start ||
+                allActivities[i].end == newActivity.end ||
+                (allActivities[i].start < newActivity.start && allActivities[i].end > newActivity.end) ||
+                (newActivity.start < allActivities[i].start && newActivity.end > allActivities[i].end) ||
+                (allActivities[i].start < newActivity.start && allActivities[i].end > newActivity.start) ||
+                (newActivity.start < allActivities[i].start && newActivity.end > allActivities[i].start)
             ) {
                 return true;
             }
@@ -1026,25 +1012,25 @@ function podudarneAktivnostiZaDan(aktivnosti, dodajAktivnost, nazivDana) {
     return false;
 }
 
-function validirajAktivnost(aktivnost) {
-    postoji = false;
-    for (let i = 0; i < dani.length; i++) {
-        if (dani[i] == aktivnost.dan) {
-            postoji = true;
+function validateAllActivities(activity) {
+    exists = false;
+    for (let i = 0; i < days.length; i++) {
+        if (days[i] == activity.day) {
+            exists = true;
         }
     }
 
-    if (aktivnost.naziv == '' ||
-        aktivnost.naziv == null ||
-        aktivnost.tip == null ||
-        aktivnost.tip == '' ||
-        aktivnost.pocetak < pocetak || aktivnost.kraj > kraj ||
-        aktivnost.pocetak > aktivnost.kraj ||
-        aktivnost.pocetak == null ||
-        aktivnost.kraj == null ||
-        aktivnost.pocetak % 0.5 != 0 ||
-        aktivnost.kraj % 0.5 != 0 ||
-        !postoji
+    if (activity.name == '' ||
+        activity.name == null ||
+        activity.type == null ||
+        activity.type == '' ||
+        activity.start < globalStart || activity.end > globalEnd ||
+        activity.start > activity.end ||
+        activity.start == null ||
+        activity.end == null ||
+        activity.start % 0.5 != 0 ||
+        activity.end % 0.5 != 0 ||
+        !exists
     ) {
         return false;
     }
@@ -1052,55 +1038,55 @@ function validirajAktivnost(aktivnost) {
 }
 
 
-app.post('/z3/aktivnost', async function (req, res) {
-    var danZaDodati = req.body.dan;
-    var danId = (await db.dan.findOrCreate({
+app.post('/z3/activity', async function (req, res) {
+    var dayToAdd = req.body.day;
+    var dayId = (await db.day.findOrCreate({
         where: {
-            naziv: danZaDodati
+            name: dayToAdd
         }
     }))[0].dataValues.id;
 
-    var aktivnostZaDodati = req.body;
+    var activityToAdd = req.body;
 
-    var nazivDana = (await db.dan.findByPk(danId)).dataValues.naziv;
+    var dayName = (await db.day.findByPk(dayId)).dataValues.name;
 
-    db.aktivnost.findAll().then(async function (response) {
-        var aktivnostiIzBaze = JSON.parse(JSON.stringify(response));
-        if (podudarneAktivnostiZaDan(aktivnostiIzBaze, aktivnostZaDodati, nazivDana) || !((validirajAktivnost(aktivnostZaDodati)))) {
+    db.activity.findAll().then(async function (response) {
+        var activitiesFromDB = JSON.parse(JSON.stringify(response));
+        if (intersectingActivitiesForDay(activitiesFromDB, activityToAdd, dayName) || !((validateAllActivities(activityToAdd)))) {
             return res.json({
-                message: 'Aktivnost nije validna!'
+                message: 'Activity is not valid!'
             });
         }
 
-        var predmetZaDodati = req.body.naziv;
-        var predmetId = (await db.predmet.findOrCreate({
+        var subjectToAdd = req.body.name;
+        var subjectToAddId = (await db.subject.findOrCreate({
             where: {
-                naziv: predmetZaDodati
+                name: subjectToAdd
             }
         }))[0].dataValues.id
 
-        var tipZaDodati = req.body.tip;
-        var tipId = (await db.tip.findOrCreate({
+        var typeToAdd = req.body.type;
+        var typeId = (await db.type.findOrCreate({
             where: {
-                naziv: tipZaDodati
+                name: typeToAdd
             }
         }))[0].dataValues.id;
 
-        var vrijemePocetka = req.body.pocetak;
-        var vrijemeKraja = req.body.kraj;
+        var activityTimeStart = req.body.start;
+        var activityTimeEnd = req.body.end;
 
 
-        db.aktivnost.create({
-            naziv: tipZaDodati,
-            pocetak: vrijemePocetka,
-            kraj: vrijemeKraja,
-            PredmetId: predmetId,
-            GrupaId: null,
-            DanId: danId,
-            TipId: tipId
+        db.activity.create({
+            name: typeToAdd,
+            start: activityTimeStart,
+            end: activityTimeEnd,
+            SubjectId: subjectToAddId,
+            GroupId: null,
+            DayId: dayId,
+            TypeId: typeId
         }).then(function (response) {
             return res.send({
-                message: "Uspješno dodana aktivnost zajedno sa svojim parametrima."
+                message: "Activity successfully added."
             })
         })
     });

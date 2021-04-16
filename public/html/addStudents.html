@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add students</title>
+    <link rel="stylesheet" type="text/css" href="../css/addStudents.css">
+    <link rel="stylesheet" type="text/css" href="../css/navbar.css">
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+    <ul>
+        <li><a href="timetable.html">Time Schedule</a></li>
+        <li><a href="activity.html">Activities</a></li>
+        <li><a href="insertActivity.html">Planning</a></li>
+        <li><a href="studentInfo.html">Info</a></li>
+        <li><a class="active" href="addStudents.html">Add students</a></li>
+        <li><a href="creatingTimetableTest.html">Timetable Test</a></li>
+    </ul>
+    <div id="wrapper">
+        <form>
+
+            <label>Choose group:</label>
+            <br>
+            <select id="groups"></select>
+            <br>
+            <br>
+            <label>Add students:</label>
+            <br>
+            <textarea id="students"></textarea>
+            <br>
+            <br>
+            
+        </form>
+        <button onclick="addStudents()" id="addButton">Add students</button>
+
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../js/students.js"></script>
+
+</html>

@@ -23,14 +23,14 @@ var Modul = (function () {
 
 
 
-    var iscrtajRaspored = function (div, dani, satPocetak, satKraj) {
+    var makeTimeTable = function (div, dani, startTime, endTime) {
 
         var body = document.getElementById(div.id);
 
-        if (satPocetak >= satKraj || (satPocetak > 24 || satPocetak < 0) || (satKraj > 24 || satKraj < 0) || !isValidHour(satPocetak) || !isValidHour(satKraj)) {
-            body.innerHTML = "Greška - Pogrešan format rasporeda"
+        if (startTime >= endTime || (startTime > 24 || startTime < 0) || (endTime > 24 || endTime < 0) || !isValidHour(startTime) || !isValidHour(endTime)) {
+            body.innerHTML = "Error - wrong timetable format"
             body.style.textAlign = "center"
-            return ("Greška - Pogrešan format rasporeda");
+            return ("Error - wrong timetable format");
         }
 
         var tbl = document.createElement('table');
@@ -40,13 +40,13 @@ var Modul = (function () {
         var hourArray = []
 
         for (let i = 0; i < allHours.length; i++) {
-            if (allHours[i] == satPocetak) {
+            if (allHours[i] == startTime) {
                 hourArray.push(alLHoursLabel[i])
             }
         }
 
         for (let i = 0; i < hours.length; i++) {
-            if (hours[i] > satPocetak && hours[i] <= satKraj) {
+            if (hours[i] > startTime && hours[i] <= endTime) {
 
                 hourArray.push(hoursLabel[i]);
             }
@@ -54,7 +54,7 @@ var Modul = (function () {
         hourArray.pop();
 
         var i = 0;
-        for (var j = 0, i = 0; j < (satKraj - satPocetak) * 2 && i < hourArray.length; j++) {
+        for (var j = 0, i = 0; j < (endTime - startTime) * 2 && i < hourArray.length; j++) {
             var td = document.createElement('td')
             if (j == 0) {
                 td.id = "empty"
@@ -76,7 +76,7 @@ var Modul = (function () {
 
         for (var i = 0; i < dani.length; i++) {
             var tr = document.createElement('tr');
-            for (var j = 0; j < (satKraj - satPocetak) * 2 + 1; j++) {
+            for (var j = 0; j < (endTime - startTime) * 2 + 1; j++) {
                 var td = document.createElement('td');
                 if (j == 0) {
                     td.classList.add("weekday")
@@ -102,60 +102,61 @@ var Modul = (function () {
         return (/^(\s|&nbsp;)*$/.test(el))
     }
 
-    var checkCells = function (raspored, day, start, columnspan, vrijemePocetak, vrijemeKraj) {
-        var body = document.getElementById(raspored.id);
+    var checkCells = function (timetable, day, start, columnspan, timeStart, timeEnd) {
+        var body = document.getElementById(timetable.id);
         for (let i = start; i < start + columnspan * 2; i++) {
-            let variable = body.getElementsByTagName('tr')[day].getElementsByTagName('td')[i].innerHTML;
-            if (!elementIsEmpty(variable)) {
-                //alert("Greška - termin " + vrijemePocetak + "-" + vrijemeKraj + " zauzet")
+            let variable = body.getElementsByTagName('tr')[day].getElementsByTagName('td')[i];
+            if (!elementIsEmpty(variable.innerHTML) || variable.style.display == "none") {
+                alert("Error - term " + timeStart + "-" + timeEnd + " is taken")
                 return true;
             }
         }
 
     }
 
-    var dodajAktivnost = function (raspored, naziv, tip, vrijemePocetak, vrijemeKraj, dan) {
-        var body = document.getElementById(raspored.id);
+    var addActivity = function (timetable, name, type, timeStart, timeEnd, weekday) {
+        var body = document.getElementById(timetable.id);
 
-        if (raspored == null || body == null) {
-            //alert("Greška - raspored nije kreiran")
-            return ("Greška - raspored nije kreiran");
+        if (timetable == null || body == null) {
+            alert("Error - no available timetable")
+            return ("Error - no available timetable");
 
         }
-        if (!isValidHourWithDecimal(vrijemePocetak) || !isValidHourWithDecimal(vrijemeKraj) || vrijemeKraj < vrijemePocetak || vrijemeKraj == vrijemePocetak) {
-            //alert("Greška - Format za vrijeme nije ispravan!")
-            return ("Greška - Format za vrijeme nije ispravan");
+        if (!isValidHourWithDecimal(timeStart) || !isValidHourWithDecimal(timeEnd) || timeEnd < timeStart || timeEnd == timeStart) {
+            alert("Error - time format is not valid!")
+            return ("Error - time format is not valid!");
         }
 
         var row = body.getElementsByClassName("weekday");
         let indexOfDay = -1;
         for (let i = 0; i < row.length; i++) {
 
-            if (row[i].innerHTML == dan) {
+            if (row[i].innerHTML == weekday) {
                 indexOfDay = i
                 break;
             }
         }
         if (indexOfDay == -1) {
-            return ("Greška - Dan ne postoji u tabeli");
+            alert("Error - weekday does not exist in table")
+            return ("Error - weekday does not exist in table");
         }
         let timesOfTable = body.getElementsByClassName('hours'); //kolone po vremenima
 
-        if (parseInt(timesOfTable[0].innerHTML.substring(0, 2)) > vrijemePocetak || parseInt(timesOfTable[timesOfTable.length - 1].innerHTML.substring(0, 2) + 2) < vrijemeKraj) {
-            //alert("Greška - Format za raspored nije ispravan");
-            return ("Greška - Format za raspored nije ispravan");
+        if (parseInt(timesOfTable[0].innerHTML.substring(0, 2)) > timeStart || parseInt(timesOfTable[timesOfTable.length - 1].innerHTML.substring(0, 2) + 2) < timeEnd) {
+            alert("Error - timetable format is not valid!");
+            return ("Error - timetable format is not valid!");
         }
 
-        let tempTime = vrijemePocetak - parseInt(timesOfTable[0].innerHTML.substring(0, 2));
+        let tempTime = timeStart - parseInt(timesOfTable[0].innerHTML.substring(0, 2));
 
-        let columnsp = vrijemeKraj - vrijemePocetak;
-        if (checkCells(raspored, indexOfDay, tempTime * 2 + 1, columnsp, vrijemePocetak, vrijemeKraj)) {
-            return ("Greška - termin " + vrijemePocetak + "-" + vrijemeKraj + " zauzet");
+        let columnsp = timeEnd - timeStart;
+        if (checkCells(raspored, indexOfDay, tempTime * 2 + 1, columnsp, timeStart, timeEnd)) {
+            return ("Error - term " + timeStart + "-" + timeEnd + " is not available");
         }
         let aktivnost = body.getElementsByTagName('tr')[indexOfDay].getElementsByTagName('td')[tempTime * 2 + 1];
         aktivnost.colSpan = columnsp * 2;
         aktivnost.classList.add("input")
-        aktivnost.innerHTML = naziv + "<br>" + tip
+        aktivnost.innerHTML = name + "<br>" + type
 
         let temp = tempTime * 2 + 1;
 
@@ -166,8 +167,9 @@ var Modul = (function () {
         return body
     }
 
+
     return {
-        iscrtajRaspored: iscrtajRaspored,
-        dodajAktivnost: dodajAktivnost
-    }
+        makeTimeTable,
+        addActivity
+    };
 }());
