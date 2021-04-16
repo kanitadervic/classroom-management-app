@@ -1,36 +1,36 @@
-DELETE,/all,null,{\”message\”:\”Files successfully deleted!\”}
-GET,/subjects,null,[]
-POST,/subject,{\"name\":\"RMA\"},{\"message\":\"Subject successfully added!\"}
-POST,/subject,{\"name\":\"WT\"},{\"message\":\"Subject successfully added!\"}
-GET,/subjects,null,[{\"name\":\"RMA\"},{\"name\":\"WT\"}]
-GET,/activities,null,[]
-GET,/subject/OOI/activity,null,[]
-POST,/subject,{\"name\":\"OOI\"},{\"message\":\"Subject successfully added!\"}
-POST,/subject,{\"name\":\"DM\"},{\"message\":\"Subject successfully added!\"}
-POST,/activity,{"name": "DM","type": "tutorial","start": 12.5,"end": 13,"day": "Friday"}, {"message":"Activity successfully added!"}
-POST,/activity,{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"}, {"message":"Activity successfully added!"}
-POST,/activity,{"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}, {"message":"Activity successfully added!"}
-GET,/subject/OOI/activity,null,[{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"},{"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}]
-GET,/subject/DM/activity,null,[{"name": "DM","type": "tutorial","start": 12.5,"end": 13,"day": "Friday"}]
-GET,/subject/WT/activity,null,[]
-GET,/activities,null,[{"name": "DM","type": "tutorial","start": 12.5,"end": 13,"day": "Friday"},{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"}, {"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}]
-DELETE,/activity/DM,null,{\”message\”:\”Activity deleted!\”}
-GET,/subject/DM/activity,null,[]
-GET,/activities,null,[{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"}, {"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}]
-DELETE,/activity/OOI,null,{\”message\”:\”Activity deleted!\”}
-GET,/activities,null,[]
-GET,/subject/OOI/activity,null,[]
-POST,/subject,{\"name\":\"VVS\"},{\"message\":\"Subject successfully added!\"}
-POST,/activity,{"name": "VVS","type": "tutorial","start": 12.5,"end": 13,"day": "Tuesday"}, {"message":"Activity successfully added!"}
-DELETE,/subject/VVS,null,{\”message\”:\”Subject deleted!\”}
-GET,/subject/VVS/activity,null,[]
-POST,/subject,{\"name\":\"WT\"},{\"message\":\"Error - subject is not deleted!\"}
-POST,/activity,{"name": "WT","type": "tutorial","start": 14,"end": 15.9,"day": "Wednesday"}, {"message":"Error - activity is not deleted!"}
-POST,/activity,{"name": "WT","type": "tutorial","start": 15,"end": 15,"day": "Saturday"}, {"message":"Error - activity is not deleted!"}
-POST,/activity,{"name": "RG","type": "tutorial","start": 14,"end": 15.9,"day": "Wednesday"}, {"message":"Error - activity is not deleted!"}
-POST,/activity,{"name": "WT","type": "tutorial","start": 6,"end": 15.9,"day": "Wednesday"}, {"message":"Error - activity is not deleted!"}
-POST,/activity,{"name": "WT","type": "tutorial","start": 14,"end": 22,"day": "Wednesday"}, {"message":"Error - activity is not deleted!"}
-DELETE,/subject/WT,null,{\”message\”:\”Subject deleted!\”}
-DELETE,/all,null,{\”message\”:\”Files successfully deleted!\”}
-GET,/subjects,null,[]
-GET,/activities,null,[]
+DELETE,/v1/all,null,{\”message\”:\”Files successfully deleted!\”}
+GET,/v1/subjects,null,[]
+POST,/v1/subject,{\"name\":\"RMA\"},{\"message\":\"Subject successfully added!\"}
+POST,/v1/subject,{\"name\":\"WT\"},{\"message\":\"Subject successfully added!\"}
+GET,/v1/subjects,null,[{\"name\":\"RMA\"},{\"name\":\"WT\"}]
+GET,/v1/activities,null,[]
+GET,/v1/subject/OOI/activities,null,[]
+POST,/v1/subject,{\"name\":\"OOI\"},{\"message\":\"Subject successfully added!\"}
+POST,/v1/subject,{\"name\":\"DM\"},{\"message\":\"Subject successfully added!\"}
+POST,/v1/activity,{"name": "DM","type": "tutorial","start": 12.5,"end": 13,"day": "Friday"}, {"message":"Activity successfully added!"}
+POST,/v1/activity,{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"}, {"message":"Activity successfully added!"}
+POST,/v1/activity,{"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}, {"message":"Activity successfully added!"}
+GET,/v1/subject/OOI/activities,null,[{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"},{"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}]
+GET,/v1/subject/DM/activities,null,[{"name": "DM","type": "tutorial","start": 12.5,"end": 13,"day": "Friday"}]
+GET,/v1/subject/WT/activities,null,[]
+GET,/v1/activities,null,[{"name": "DM","type": "tutorial","start": 12.5,"end": 13,"day": "Friday"},{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"}, {"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}]
+DELETE,/v1/activity/DM,null,{\”message\”:\”Activity deleted!\”}
+GET,/v1/subject/DM/activities,null,[]
+GET,/v1/activities,null,[{"name": "OOI","type": "lecture","start": 12.5,"end": 13,"day": "Monday"}, {"name": "OOI","type": "tutorial","start": 14,"end": 15,"day": "Wednesday"}]
+DELETE,/v1/activity/OOI,null,{\”message\”:\”Activity deleted!\”}
+GET,/v1/activities,null,[]
+GET,/v1/subject/OOI/activities,null,[]
+POST,/v1/subject,{\"name\":\"VVS\"},{\"message\":\"Subject successfully added!\"}
+POST,/v1/activity,{"name": "VVS","type": "tutorial","start": 12.5,"end": 13,"day": "Tuesday"}, {"message":"Activity successfully added!"}
+DELETE,/v1/subject/VVS,null,{\”message\”:\”Subject deleted!\”}
+GET,/v1/subject/VVS/activities,null,[]
+POST,/v1/subject,{\"name\":\"WT\"},{\"message\":\"Subject already exists!\"}
+POST,/v1/activity,{"name": "WT","type": "tutorial","start": 14,"end": 15.9,"day": "Wednesday"}, {"message":"Activity cannot be added!"}
+POST,/v1/activity,{"name": "WT","type": "tutorial","start": 15,"end": 15,"day": "Saturday"}, {"message":"Activity cannot be added!"}
+POST,/v1/activity,{"name": "RG","type": "tutorial","start": 14,"end": 15.9,"day": "Wednesday"}, {"message":"Activity cannot be added!"}
+POST,/v1/activity,{"name": "WT","type": "tutorial","start": 6,"end": 15.9,"day": "Wednesday"}, {"message":"Activity cannot be added!"}
+POST,/v1/activity,{"name": "WT","type": "tutorial","start": 14,"end": 22,"day": "Wednesday"}, {"message":"Activity cannot be added!"}
+DELETE,/v1/subject/WT,null,{\”message\”:\”Subject deleted!\”}
+DELETE,/v1/all,null,{\”message\”:\”Files successfully deleted!\”}
+GET,/v1/subjects,null,[]
+GET,/v1/activities,null,[]

@@ -24,7 +24,6 @@ describe('Tests', function () {
         test = test.replace(/\]\]/g, ']');
 
 
-
         let testParts = test.split(',');
 
         let testMethod = testParts[0];
@@ -34,10 +33,10 @@ describe('Tests', function () {
         let temp = 3;
         if (testInput[testInput.length - 1] != "}" && testInput != null && testParts.length > 4) {
             for (let i = 3; i < testParts.length; i++) {
-                if(testParts[2].includes('{') && !testParts[2].includes('}')) {
+                if (testParts[2].includes('{') && !testParts[2].includes('}')) {
                     testParts[2] += ',' + testParts[i];
-                    temp = i+1;
-                } else if(temp!=i){
+                    temp = i + 1;
+                } else if (temp != i) {
                     testParts[temp] += ',' + testParts[i];
                 }
 
@@ -46,6 +45,7 @@ describe('Tests', function () {
 
         testInput = testParts[2];
         testOutput = testParts[temp];
+        console.log(testMethod)
         it('Test ' + testMethod + ' ' + testRoute + ' ' + testInput + ' ' + testOutput, function (done) {
             if (testMethod == 'GET') {
                 chai.request('http://localhost:3000')

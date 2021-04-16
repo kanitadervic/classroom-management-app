@@ -430,10 +430,6 @@ app.put('/v2/subject/:id', function (req, res) {
 })
 
 
-
-
-
-
 /*
     ****************************************************
                         GRUPA
@@ -634,7 +630,6 @@ app.put('/v2/activity/:id', function (req, res) {
 })
 
 
-
 /*
     ****************************************************
                         DAN
@@ -803,7 +798,6 @@ app.put('/v2/type/:id', function (req, res) {
         console.log(response)
     })
 })
-
 
 
 /*
@@ -983,7 +977,7 @@ app.post('/z3/subject', async function (req, res) {
 app.delete('/z3/subject/:name', async function (req, res) {
     var subject = req.params.name;
     db.subject.destroy({
-        where : {
+        where: {
             name: subject
         }
     }).then(function (response) {
@@ -1092,7 +1086,6 @@ app.post('/z3/activity', async function (req, res) {
     });
 
 })
-
 
 
 app.listen(3000);

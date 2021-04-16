@@ -22,7 +22,6 @@ var Modul = (function () {
     }
 
 
-
     var makeTimeTable = function (div, dani, startTime, endTime) {
 
         var body = document.getElementById(div.id);

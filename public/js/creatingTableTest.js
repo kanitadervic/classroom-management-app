@@ -6,7 +6,7 @@ import {
 let okvir = document.getElementById('okvir');
 
 
-makeTimeTable(okvir, ["Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak"], 8,21);
+makeTimeTable(okvir, ["Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak"], 8, 21);
 addActivity(okvir, "WT", "Predavanje", 9, 12, "Ponedjeljak");
 addActivity(okvir, "WT", "vježbe", 12, 13.5, "Ponedjeljak");
 addActivity(okvir, "RMA", "predavanje", 14, 17, "Ponedjeljak");

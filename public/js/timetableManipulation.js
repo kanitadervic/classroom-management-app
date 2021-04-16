@@ -1,25 +1,25 @@
-var subjectList = [];
-var activityList = [];
-var message = document.getElementById("message");
+const subjectList = [];
+let activityList = [];
+const message = document.getElementById("message");
 
 
 getSubjectsAndActivities();
 
 function getSubjectsAndActivities() {
     $.ajax({
-            url: "http://localhost:3000/v2/subjects",
-            type: 'GET',
-            dataType: 'json'
-        })
+        url: "http://localhost:3000/v2/subjects",
+        type: 'GET',
+        dataType: 'json'
+    })
         .done(function (res) {
-            for (var subject of res) {
+            for (let subject of res) {
                 subjectList.push(subject.name);
             }
             $.ajax({
-                    url: "http://localhost:3000/v2/activities",
-                    type: 'GET',
-                    dataType: 'json'
-                })
+                url: "http://localhost:3000/v2/activities",
+                type: 'GET',
+                dataType: 'json'
+            })
                 .done(function (res) {
                     activityList = res;
                 })
@@ -34,9 +34,9 @@ function getSubjectsAndActivities() {
 
 function deleteSubject(subject) {
     $.ajax({
-            url: "http://localhost:3000/z3/subject/" + subject,
-            method: 'DELETE'
-        })
+        url: "http://localhost:3000/z3/subject/" + subject,
+        method: 'DELETE'
+    })
         .done(function (res) {
             getSubjectsAndActivities();
         })
@@ -46,35 +46,35 @@ function deleteSubject(subject) {
 }
 
 function sendSubjectWithActivity(subjectName, activityName, startTime, endTime, weekday) {
-    var obj = {
+    const obj = {
         name: subjectName
     };
-    var myData = JSON.stringify(obj);
+    const myData = JSON.stringify(obj);
     $.ajax({
-            url: "http://localhost:3000/z3/subject",
-            type: 'POST',
-            data: myData,
-            dataType: 'json',
-            contentType: 'application/json'
-        })
+        url: "http://localhost:3000/z3/subject",
+        type: 'POST',
+        data: myData,
+        dataType: 'json',
+        contentType: 'application/json'
+    })
         .done(function (res) {
-            var obj2 = {
+            const obj2 = {
                 name: subjectName,
                 type: activityName,
                 start: startTime,
                 end: endTime,
                 day: weekday
-            }
-            var myData2 = JSON.stringify(obj2);
+            };
+            const myData2 = JSON.stringify(obj2);
             $.ajax({
-                    url: "http://localhost:3000/z3/activity",
-                    type: 'POST',
-                    data: myData2,
-                    dataType: 'json',
-                    contentType: 'application/json'
-                })
+                url: "http://localhost:3000/z3/activity",
+                type: 'POST',
+                data: myData2,
+                dataType: 'json',
+                contentType: 'application/json'
+            })
                 .done(function (res) {
-                    if(res.message == "Activity is not valid!"){
+                    if (res.message == "Activity is not valid!") {
                         deleteSubject(subjectName);
                     } else {
                         getSubjectsAndActivities();
@@ -91,21 +91,21 @@ function sendSubjectWithActivity(subjectName, activityName, startTime, endTime, 
 }
 
 function sendNewActivity(subjectName, activityName, startTime, endTime, weekday) {
-    var obj = {
+    const obj = {
         name: subjectName,
         type: activityName,
         start: startTime,
         end: endTime,
         day: weekday
-    }
-    var myData = JSON.stringify(obj);
+    };
+    const myData = JSON.stringify(obj);
     $.ajax({
-            url: "http://localhost:3000/z3/activity",
-            type: 'POST',
-            data: myData,
-            dataType: 'json',
-            contentType: 'application/json'
-        })
+        url: "http://localhost:3000/z3/activity",
+        type: 'POST',
+        data: myData,
+        dataType: 'json',
+        contentType: 'application/json'
+    })
         .done(function (res) {
             getSubjectsAndActivities();
             message.innerHTML = res.message;
@@ -116,24 +116,24 @@ function sendNewActivity(subjectName, activityName, startTime, endTime, weekday)
 }
 
 function addActivity() {
-    var subjectName = document.getElementById('subject').value;
-    var activityName = document.getElementById('activity').value;
-    var startTime = document.getElementById('timeStart');
-    
-    var hours = parseInt(startTime.value.substring(0,2));
-    var minutes = parseInt(startTime.value.substring(3,5)) /60;
+    const subjectName = document.getElementById('subject').value;
+    const activityName = document.getElementById('activity').value;
+    const startTime = document.getElementById('timeStart');
 
-    var start = hours + minutes;
-    var end = document.getElementById('timeEnd');
-    
-    hours = parseInt(end.value.substring(0,2));
-    minutes = parseInt(end.value.substring(3,5)) /60;
+    let hours = parseInt(startTime.value.substring(0, 2));
+    let minutes = parseInt(startTime.value.substring(3, 5)) / 60;
 
-    var endTime = hours + minutes;
+    const start = hours + minutes;
+    const end = document.getElementById('timeEnd');
 
-    var weekday = document.getElementById('day').value;
+    hours = parseInt(end.value.substring(0, 2));
+    minutes = parseInt(end.value.substring(3, 5)) / 60;
 
-    var subjectExists = subjectList.includes(subjectName);
+    const endTime = hours + minutes;
+
+    const weekday = document.getElementById('day').value;
+
+    const subjectExists = subjectList.includes(subjectName);
 
 
     if (subjectExists) {
