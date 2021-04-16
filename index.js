@@ -127,13 +127,13 @@ function getActivitiesForSubject(subjectName) {
 function validateActivity(activity) {
     exists = false;
     for (let i = 0; i < days.length; i++) {
-        if (days[i] == activity.dan) {
+        if (days[i] == activity.day) {
             exists = true;
         }
     }
 
     if (activity.name == '' ||
-        activity.naziv == null ||
+        activity.name == null ||
         activity.type == null ||
         activity.type == '' ||
         activity.start < globalStart || activity.end > globalEnd ||

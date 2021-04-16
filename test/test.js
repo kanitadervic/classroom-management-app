@@ -6,18 +6,18 @@ const fs = require('fs');
 
 chai.use(chaiHttp)
 
-describe('Testovi', function () {
-    let testovi2 = [];
+describe('Tests', function () {
+    let testData = [];
     try {
-        testovi2 = fs.readFileSync('test/testniPodaci.txt', 'utf-8');
+        testData = fs.readFileSync('test/testData.txt', 'utf-8');
     } catch (error) {
-        console.log("Greška " + error);
+        console.log("Error: " + error);
     }
 
-    const testovi = testovi2.split('\n');
+    const tests = testData.split('\n');
 
-    for (let i = 0; i < testovi.length; i++) {
-        let test = testovi[i];
+    for (let i = 0; i < tests.length; i++) {
+        let test = tests[i];
         test = test.replace(/\\/g, '');
         test = test.replace(/”/g, '"');
         test = test.replace(/\[\[/g, '[');
@@ -25,58 +25,58 @@ describe('Testovi', function () {
 
 
 
-        let dijeloviTesta = test.split(',');
+        let testParts = test.split(',');
 
-        let operacija = dijeloviTesta[0];
-        let ruta = dijeloviTesta[1];
-        let ulaz = dijeloviTesta[2];
-        let izlaz = dijeloviTesta[3];
+        let testMethod = testParts[0];
+        let testRoute = testParts[1];
+        let testInput = testParts[2];
+        let testOutput = testParts[3];
         let temp = 3;
-        if (ulaz[ulaz.length - 1] != "}" && ulaz != null && dijeloviTesta.length > 4) {
-            for (let i = 3; i < dijeloviTesta.length; i++) {
-                if(dijeloviTesta[2].includes('{') && !dijeloviTesta[2].includes('}')) {
-                    dijeloviTesta[2] += ',' + dijeloviTesta[i];
+        if (testInput[testInput.length - 1] != "}" && testInput != null && testParts.length > 4) {
+            for (let i = 3; i < testParts.length; i++) {
+                if(testParts[2].includes('{') && !testParts[2].includes('}')) {
+                    testParts[2] += ',' + testParts[i];
                     temp = i+1;
                 } else if(temp!=i){
-                    dijeloviTesta[temp] += ',' + dijeloviTesta[i];
+                    testParts[temp] += ',' + testParts[i];
                 }
 
             }
         }
 
-        ulaz = dijeloviTesta[2];
-        izlaz = dijeloviTesta[temp];
-        it('Test ' + operacija + ' ' + ruta + ' ' + ulaz + ' ' + izlaz, function (done) {
-            if (operacija == 'GET') {
+        testInput = testParts[2];
+        testOutput = testParts[temp];
+        it('Test ' + testMethod + ' ' + testRoute + ' ' + testInput + ' ' + testOutput, function (done) {
+            if (testMethod == 'GET') {
                 chai.request('http://localhost:3000')
-                    .get('/' + ruta.toString().substring(1))
-                    .send(JSON.parse(ulaz))
+                    .get('/' + testRoute.toString().substring(1))
+                    .send(JSON.parse(testInput))
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
-                        res.body.should.be.eql(JSON.parse(izlaz))
+                        res.body.should.be.eql(JSON.parse(testOutput))
                         done();
                     });
             }
-            if (operacija == 'POST') {
+            if (testMethod == 'POST') {
                 chai.request('http://localhost:3000')
-                    .post('/' + ruta.toString().substring(1))
-                    .send(JSON.parse(ulaz))
+                    .post('/' + testRoute.toString().substring(1))
+                    .send(JSON.parse(testInput))
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
-                        res.body.should.be.eql(JSON.parse(izlaz))
+                        res.body.should.be.eql(JSON.parse(testOutput))
                         done();
                     });
             }
-            if (operacija == 'DELETE') {
+            if (testMethod == 'DELETE') {
                 chai.request('http://localhost:3000')
-                    .delete('/' + ruta.toString().substring(1))
-                    .send(JSON.parse(ulaz))
+                    .delete('/' + testRoute.toString().substring(1))
+                    .send(JSON.parse(testInput))
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
-                        res.body.should.be.eql(JSON.parse(izlaz))
+                        res.body.should.be.eql(JSON.parse(testOutput))
                         done();
                     });
             }
