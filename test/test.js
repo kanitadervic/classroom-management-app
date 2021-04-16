@@ -45,7 +45,6 @@ describe('Tests', function () {
 
         testInput = testParts[2];
         testOutput = testParts[temp];
-        console.log(testMethod)
         it('Test ' + testMethod + ' ' + testRoute + ' ' + testInput + ' ' + testOutput, function (done) {
             if (testMethod == 'GET') {
                 chai.request('http://localhost:3000')
