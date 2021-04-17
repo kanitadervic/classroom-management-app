@@ -5,6 +5,6 @@ This project is a web application developed with the purpose of learning basic w
 Used tools: HTML5, CSS, JavaScript, NodeJS, MySQL
 
 
-# Tests
+## Tests
 
 To run tests, start the application in one command line and run "npm test" in a different command line.
